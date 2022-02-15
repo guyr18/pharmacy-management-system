@@ -243,6 +243,7 @@ void FindItemPage::nameSearchHandler()
                         const Medicine& m2 = MedicineManager::getInstance().getById(prefixes.at(convItemNo - 1)._id);
                         bool printHeader = count == 0 ? true : false;
                         m2.print(Medicine::L_ALL, printHeader);
+                        std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
                         count++;
                         break;
 

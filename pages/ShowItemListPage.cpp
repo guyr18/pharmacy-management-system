@@ -62,6 +62,7 @@ void ShowItemListPage::log()
 
     }
 
+    std::cout << "------------------------------------------------------------------------------------------------------------------" << std::endl;
     std::cout << std::endl << "Press 'm' to return to the main menu..." << std::endl;
   
 }

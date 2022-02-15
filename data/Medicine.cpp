@@ -114,7 +114,4 @@ void Medicine::print(const unsigned int level, bool printHeader) const
         std::cout << "|" << std::endl;
 
     }
-
-    std::cout << closingLine << std::endl;
-
 }
