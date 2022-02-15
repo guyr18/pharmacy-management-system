@@ -160,32 +160,9 @@ void FindItemPage::idSearchHandler()
         }   
     }
 
-    std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-    std::cout << "| ID           | Name          | Company          | Arrival Date         | Expire Date         | Price          | Qty           |" << std::endl;
-    std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-    Medicine& m = MedicineManager::getInstance().getById(convId);
-    std::cout << "| " << m._id;
-    Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(m._id).size() - 13));
-    std::cout << "| " << m._name;
-    Utils::getInstance().printNSpaces(Utils::getInstance().abs(m._name.size() - 14));
-    std::cout << "| ";
-    std::cout << m._ownedBy;
-    Utils::getInstance().printNSpaces(Utils::getInstance().abs(m._ownedBy.size() - 17));
-    std::cout << "| ";
-    std::cout << m._arrivalDate;
-    Utils::getInstance().printNSpaces(Utils::getInstance().abs(m._arrivalDate.size() - 21));
-    std::cout << "| ";
-    std::cout << m._expirationDate;
-    Utils::getInstance().printNSpaces(Utils::getInstance().abs(m._expirationDate.size() - 20));
-    std::cout << "| ";
-    std::cout << m._price;
-    Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(m._price).size() - 22));
-    std::cout << "| ";
-    std::cout << m._qty;
-    Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(m._qty).size() - 13));
-    std::cout << " |" << std::endl;
-        std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-
+    const Medicine& m = MedicineManager::getInstance().getById(convId);
+    m.print(Medicine::L_ALL, true);
+  
 }
 
 // NameSearchHandler() handles the algorithm related to name lookup.
@@ -252,6 +229,7 @@ void FindItemPage::nameSearchHandler()
             {
 
                 std::string itemno;
+                int count = 0;
                 std::getline(std::cin, itemno);
             
                 try
@@ -262,31 +240,10 @@ void FindItemPage::nameSearchHandler()
                     if(convItemNo >= 1 && convItemNo <= numPrefixes)
                     {
 
-                        std::cout << std::endl << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-                        std::cout << "| ID           | Name          | Company          | Arrival Date         | Expire Date         | Price          | Qty           |" << std::endl;
-                        std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-                        Medicine& m2 = MedicineManager::getInstance().getById(prefixes.at(convItemNo - 1)._id);
-                        std::cout << "| " << m2._id;
-                        Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(m2._id).size() - 13));
-                        std::cout << "| " << m2._name;
-                        Utils::getInstance().printNSpaces(Utils::getInstance().abs(m2._name.size() - 14));
-                        std::cout << "| ";
-                        std::cout << m2._ownedBy;
-                        Utils::getInstance().printNSpaces(Utils::getInstance().abs(m2._ownedBy.size() - 17));
-                        std::cout << "| ";
-                        std::cout << m2._arrivalDate;
-                        Utils::getInstance().printNSpaces(Utils::getInstance().abs(m2._arrivalDate.size() - 21));
-                        std::cout << "| ";
-                        std::cout << m2._expirationDate;
-                        Utils::getInstance().printNSpaces(Utils::getInstance().abs(m2._expirationDate.size() - 20));
-                        std::cout << "| ";
-                        std::cout << m2._price;
-                        Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(m2._price).size() - 22));
-                        std::cout << "| ";
-                        std::cout << m2._qty;
-                        Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(m2._qty).size() - 13));
-                        std::cout << " |" << std::endl;
-                        std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+                        const Medicine& m2 = MedicineManager::getInstance().getById(prefixes.at(convItemNo - 1)._id);
+                        bool printHeader = count == 0 ? true : false;
+                        m2.print(Medicine::L_ALL, printHeader);
+                        count++;
                         break;
 
                     }

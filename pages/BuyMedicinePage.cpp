@@ -24,7 +24,6 @@ void BuyMedicinePage::monitor()
     boost::container::vector<int> idVect;
     boost::container::vector<boost::tuple<int, int>> newQty;
     std::string id;
-    std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
     std::cin.ignore();
 
     while(true)
@@ -146,36 +145,16 @@ void BuyMedicinePage::log()
 {
 
     std::cout << "Medicine Transaction" << std::endl << std::endl;
-    std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-    std::cout << "| ID           | Name          | Company          | Arrival Date         | Expire Date         | Price          | Qty           |" << std::endl;
-    std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-
     MedicineManager& ref = MedicineManager::getInstance();
-    boost::container::vector<Medicine> cache = ref.getData();
+    boost::container::vector<Medicine>& cache = ref.getData();
+    int count = 0;
 
     for(const Medicine& m : cache)
     {
 
-        std::cout << "| " << m._id;
-        Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(m._id).size() - 13));
-        std::cout << "| " << m._name;
-        Utils::getInstance().printNSpaces(Utils::getInstance().abs(m._name.size() - 14));
-        std::cout << "| ";
-        std::cout << m._ownedBy;
-        Utils::getInstance().printNSpaces(Utils::getInstance().abs(m._ownedBy.size() - 17));
-        std::cout << "| ";
-        std::cout << m._arrivalDate;
-        Utils::getInstance().printNSpaces(Utils::getInstance().abs(m._arrivalDate.size() - 21));
-        std::cout << "| ";
-        std::cout << m._expirationDate;
-        Utils::getInstance().printNSpaces(Utils::getInstance().abs(m._expirationDate.size() - 20));
-        std::cout << "| ";
-        std::cout << m._price;
-        Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(m._price).size() - 22));
-        std::cout << "| ";
-        std::cout << m._qty;
-        Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(m._qty).size() - 13));
-        std::cout << " |" << std::endl;
+        bool printHeader = count == 0 ? true : false;
+        m.print(Medicine::L_ALL, printHeader);
+        count++;
 
     }
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "headers/MedicineManager.h"
+#include <cmath>
 
 // Default constructor.
 MedicineManager::MedicineManager() {}
@@ -118,7 +119,7 @@ bool MedicineManager::isUniqueName(const std::string name)
 }
 
 // GetData() returns the cached list of Medicine object(s), @see _data.
-boost::container::vector<Medicine> MedicineManager::getData() const
+boost::container::vector<Medicine>& MedicineManager::getData()
 {
 
     return _data;

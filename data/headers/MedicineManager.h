@@ -48,7 +48,7 @@ class MedicineManager
         bool isUniqueName(const std::string name);
 
         // GetData() returns the cached list of Medicine object(s), @see _data.
-        boost::container::vector<Medicine> getData() const;
+        boost::container::vector<Medicine>& getData();
     
 };
 
