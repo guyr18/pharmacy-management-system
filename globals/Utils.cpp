@@ -39,7 +39,7 @@ int Utils::abs(const int x)
 
 // SplitBy(src, delim) splits a string src by delimiter delim, appends both portions
 // into a two element boost::tuple and returns a corresponding reference.
-boost::tuple<std::string, std::string>* Utils::splitBy(const std::string src, const char delim)
+boost::shared_ptr<boost::tuple<std::string, std::string>> Utils::splitBy(const std::string src, const char delim)
 {
 
     unsigned int start = 0, end = 0;
@@ -61,10 +61,9 @@ boost::tuple<std::string, std::string>* Utils::splitBy(const std::string src, co
         }
     }
 
-    std::cout << start << std::endl << end << std::endl;
     std::string left = src.substr(start, end);
     std::string right = src.substr(end + 1, src.size());
-    boost::tuple<std::string, std::string>* res = new boost::tuple<std::string, std::string>(left, right);
+    boost::shared_ptr<boost::tuple<std::string, std::string>> res{new boost::tuple<std::string, std::string>(left, right)};
     return res;
 
 }

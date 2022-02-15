@@ -61,12 +61,18 @@ void SQLConnection::connect()
     try
     {
    
-        _conn.reset(new pqxx::connection{
-            "user=" + _username + " "
-            "host=" + _hostname + " "
-            "port=" + std::to_string(_port) + " "
-            "password=" + _password + " "
-            "dbname=" + _dbname});
+        if(!_conn)
+        {
+
+            _conn.reset(new pqxx::connection{
+                "user=" + _username + " "
+                "host=" + _hostname + " "
+                "port=" + std::to_string(_port) + " "
+                "password=" + _password + " "
+                "dbname=" + _dbname});
+
+        }
+
         _active = true;
 
     }

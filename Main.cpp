@@ -13,9 +13,9 @@ int main(int argc, char* argv[])
     DBConfig& dbc = DBConfig::getInstance();
     std::string conf;
     dbc.loadConfig(CONFIG_PATH);
-    SQLConnection conn{dbc.HOST_NAME, dbc.DB_NAME, dbc.USER_NAME, dbc.PWD, static_cast<unsigned int>(std::stoi(dbc.PORT_NO))};
-    conn.connect();
-    pqxx::result r = conn.fetch("SELECT * FROM medicines");
+    dbc.connObj.reset(new SQLConnection{dbc.HOST_NAME, dbc.DB_NAME, dbc.USER_NAME, dbc.PWD, static_cast<unsigned int>(std::stoi(dbc.PORT_NO))});
+    dbc.connObj.get()->connect();
+    pqxx::result r = dbc.connObj.get()->fetch("SELECT * FROM medicines");
     MedicineManager& ref = MedicineManager::getInstance();
 
     for(const pqxx::row& row : r)
@@ -26,8 +26,7 @@ int main(int argc, char* argv[])
 
     }
 
-    conn.disconnect();
-    *dbc.connObj.get() = conn;
+    dbc.connObj->disconnect();
 
     // Log main menu.
     Pages::getInstance().MAIN.log();

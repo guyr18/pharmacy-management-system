@@ -3,8 +3,7 @@
 
 #include "../../db/SQLConnection.cpp"
 #include <boost/tuple/tuple.hpp>
-#include <boost/scoped_ptr.hpp>
-
+#include <boost/shared_ptr.hpp>
 class Utils
 {
 
@@ -34,7 +33,7 @@ class Utils
 
         // SplitBy(src, delim) splits a string src by delimiter delim, appends both portions
         // into a two element boost::tuple and returns a corresponding pointer reference.
-        boost::tuple<std::string, std::string>*  splitBy(const std::string src, const char delim);
+        boost::shared_ptr<boost::tuple<std::string, std::string>> splitBy(const std::string src, const char delim);
 
 };
 

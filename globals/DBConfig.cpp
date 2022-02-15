@@ -58,12 +58,10 @@ class DBConfig
                 while(std::getline(ifs, line))
                 {
 
-                    boost::tuple<std::string, std::string>* res = Utils::getInstance().splitBy(line, '=');
+                    boost::shared_ptr<boost::tuple<std::string, std::string>> res = Utils::getInstance().splitBy(line, '=');
                     const std::string strVar = res->get<0>();
                     const std::string strVal = res->get<1>();
-                    std::cout << "strVar = " << strVar << std::endl;
-                    std::cout << "strVal = " << strVal << std::endl;
-                    
+
                     if(strVar == "HOST_NAME")
                     {
 
@@ -92,6 +90,7 @@ class DBConfig
                     {
 
                         PORT_NO = strVal;
+                        
 
                     }
                     else
@@ -101,9 +100,6 @@ class DBConfig
                         return;
 
                     }
-
-                    delete res;
-
                 }
             }
             catch(const std::exception& e)
