@@ -47,6 +47,10 @@ class MedicineManager
         // And otherwise, false.
         bool isUniqueName(const std::string name);
 
+        // BubbleSortById() sorts @see _data in ascending order using
+        // a bubble sort algorithm on the variable _id.
+        void bubbleSortById();
+
         // GetData() returns the cached list of Medicine object(s), @see _data.
         boost::container::vector<Medicine>& getData();
     

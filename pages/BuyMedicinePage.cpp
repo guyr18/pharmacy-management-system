@@ -146,9 +146,9 @@ void BuyMedicinePage::log()
 
     std::cout << "Medicine Transaction" << std::endl << std::endl;
     MedicineManager& ref = MedicineManager::getInstance();
-    boost::container::vector<Medicine>& cache = ref.getData();
+    boost::container::vector<Medicine> cache = ref.getData();
     int count = 0;
-
+    
     for(const Medicine& m : cache)
     {
 
