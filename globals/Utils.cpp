@@ -51,13 +51,17 @@ boost::tuple<std::string, std::string>* Utils::splitBy(const std::string src, co
         {
 
             end++;
+            
+        }
+        else
+        {
+
+            break;
 
         }
-
-        break;
-
     }
 
+    std::cout << start << std::endl << end << std::endl;
     std::string left = src.substr(start, end);
     std::string right = src.substr(end + 1, src.size());
     boost::tuple<std::string, std::string>* res = new boost::tuple<std::string, std::string>(left, right);
