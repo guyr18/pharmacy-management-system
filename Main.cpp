@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     DBConfig& dbc = DBConfig::getInstance();
     std::string conf;
     dbc.loadConfig(CONFIG_PATH);
-    SQLConnection conn{dbc.HOST_NAME, dbc.DB_NAME, dbc.USER_NAME, dbc.PWD, std::stoi(dbc.PORT_NO)};
+    SQLConnection conn{dbc.HOST_NAME, dbc.DB_NAME, dbc.USER_NAME, dbc.PWD, static_cast<unsigned int>(std::stoi(dbc.PORT_NO))};
     conn.connect();
     pqxx::result r = conn.fetch("SELECT * FROM medicines");
     MedicineManager& ref = MedicineManager::getInstance();

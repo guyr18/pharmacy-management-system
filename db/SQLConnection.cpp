@@ -36,6 +36,7 @@ SQLConnection& SQLConnection::operator=(const SQLConnection& rhs)
     _username = rhs.getUserName();
     _password = rhs.getPassword();
     _port = rhs.getPortNo();
+    return *this;
 
 }
 

@@ -58,9 +58,9 @@ class DBConfig
                 while(std::getline(ifs, line))
                 {
 
-                    const boost::tuple<std::string, std::string> res = Utils::getInstance().splitBy(line, '=');
-                    const std::string strVar = res.get<0>();
-                    const std::string strVal = res.get<1>();
+                    boost::tuple<std::string, std::string>* res = Utils::getInstance().splitBy(line, '=');
+                    const std::string strVar = res->get<0>();
+                    const std::string strVal = res->get<1>();
 
                     if(strVar == "HOST_NAME")
                     {
@@ -98,6 +98,9 @@ class DBConfig
                         std::cerr << "Invalid configuration file! All field names must maintain the same naming as when downloaded." << std::endl;
 
                     }
+
+                    delete res;
+                    
                 }
             }
             catch(const std::exception& e)
