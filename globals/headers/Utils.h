@@ -26,14 +26,20 @@ class Utils
         static Utils& getInstance();
 
         // PrintNSpaces(n) prints n spaces to the standard terminal.
-        static void printNSpaces(const unsigned int n);
+        static void printNSpaces(const unsigned int n) noexcept;
 
         // Abs(x) returns x if x >= 0 and -x if x < 0.
-        static int abs(const int x);
+        static int abs(const int x) noexcept;
 
         // SplitBy(src, delim) splits a string src by delimiter delim, appends both portions
         // into a two element boost::tuple and returns a corresponding pointer reference.
         boost::shared_ptr<boost::tuple<std::string, std::string>> splitBy(const std::string src, const char delim);
+
+        // IsStringDouble(s) returns true if s represents a double. And otherwise, false.
+        bool isStringDouble(const std::string s);
+
+        // IsStringInteger(s) returns true if s represents an integer. And otherwise, false.
+        bool isStringInteger(const std::string s);    
 
 };
 

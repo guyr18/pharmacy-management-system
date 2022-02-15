@@ -18,7 +18,7 @@ Utils& Utils::getInstance()
 }
 
 // PrintNSpaces(n) prints n spaces to the standard terminal.
-void Utils::printNSpaces(const unsigned int n)
+void Utils::printNSpaces(const unsigned int n) noexcept
 {
 
     for(int i = 0; i < n; i++)
@@ -30,7 +30,7 @@ void Utils::printNSpaces(const unsigned int n)
 }
 
 // Abs(x) returns x if x >= 0 and -x if x < 0.
-int Utils::abs(const int x)
+int Utils::abs(const int x) noexcept
 {
 
     return x >= 0 ? x : -x;
@@ -66,4 +66,43 @@ boost::shared_ptr<boost::tuple<std::string, std::string>> Utils::splitBy(const s
     boost::shared_ptr<boost::tuple<std::string, std::string>> res{new boost::tuple<std::string, std::string>(left, right)};
     return res;
 
+}
+
+// IsStringDouble(s) returns true if s represents a double. And otherwise, false.
+bool Utils::isStringDouble(const std::string s)
+{
+
+    try
+    {
+        
+        double temp = std::atof(s.c_str());
+        return true;
+
+    }
+    catch(const std::exception& e)
+    {
+        
+        return false;
+
+    }
+}
+
+// IsStringInteger(s) returns true if s represents an integer. And otherwise, false.
+bool Utils::isStringInteger(const std::string s)
+{
+
+    try
+    {
+
+
+        int temp = std::stoi(s);
+        return true;
+
+    }
+    catch(const std::exception& e)
+    {
+        
+        return false;
+
+    }
 }

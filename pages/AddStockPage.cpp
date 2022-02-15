@@ -37,41 +37,8 @@ void AddStockPage::monitor()
     std::cout << "Enter Quantity: ";
     std::getline(std::cin, qty);
 
-    double castedPrice;
-    int castedQty;
-
-    // Here, we attempt to cast the string to a double; if 
-    // a non-numeric value is inputted, an error is thrown
-    // and we default to 0.0.
-    try
-    {
-        
-        castedPrice = std::atof(price.c_str());
-
-    }
-    catch(const std::exception& e)
-    {
-        
-        castedPrice = 0.0;
-
-    }
-
-    // Similarly, we attempt to cast the string to an integer; if 
-    // a non-numeric value is inputted, an error is thrown
-    // and we default to 0.
-    try
-    {
-        
-        castedQty = std::stoi(qty);
-
-    }
-    catch(const std::exception& e)
-    {
-        
-        castedQty = 0;
-
-    }
-    
+    double castedPrice = Utils::getInstance().isStringDouble(price) ? std::stof(price) : 0.0;
+    int castedQty = Utils::getInstance().isStringInteger(qty) ? std::stoi(qty) : 0;
     Medicine m{static_cast<unsigned int>(MedicineManager::getInstance().getData().size() + 1), name, cmp, ad, ed, castedPrice, castedQty};
 
     // Make sure this isn't a duplicate entry, if it isn't we add it.
