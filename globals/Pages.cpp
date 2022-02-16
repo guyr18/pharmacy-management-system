@@ -4,7 +4,7 @@
 #include "../pages/headers/BuyMedicinePage.h"
 #include "../pages/headers/AddStockPage.h"
 #include "../pages/headers/FindItemPage.h"
-#include "../pages/UpdateStockPage.cpp"
+#include "../pages/headers/UpdateStockPage.h"
 
 class Pages
 {

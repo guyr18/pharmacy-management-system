@@ -3,6 +3,7 @@
 #include "BuyMedicinePage.cpp"
 #include "AddStockPage.cpp"
 #include "FindItemPage.cpp"
+#include "UpdateStockPage.cpp"
 #include "headers/MainPage.h"
 #include <string>
 #include <iostream>

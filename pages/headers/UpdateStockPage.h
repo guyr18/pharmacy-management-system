@@ -4,6 +4,7 @@
 #include "../ITerminalPage.cpp"
 #include <boost/container/vector.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <boost/shared_ptr.hpp>
 
 class UpdateStockPage : public ITerminalPage
 {
