@@ -5,6 +5,7 @@
 #include <locale>
 #include <boost/tuple/tuple.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/date_time.hpp>
 #include <boost/scoped_ptr.hpp>
 
 // Default constructor / destructor.
@@ -109,7 +110,7 @@ bool Utils::isStringInteger(const std::string s)
     }
 }
 
-// IsLeap(year) returns true if year is a leap year. And otherwise, false.
+// IsLeap(year) returns true if a year is a leap year. And otherwise, false.
 //
 // This is a modified implementation of the following article: https://www.geeksforgeeks.org/program-check-date-valid-not/
 bool Utils::isLeap(int year)
@@ -126,6 +127,8 @@ bool Utils::isLeap(int year)
 bool Utils::isStringDate(const std::string s)
 {
 
+    // Under this format, the length of a valid date string should be fixed to 10.
+    // Any more or less than 10 would be invalid, return false.
     if(s.length() != 10)
     {
 
@@ -139,8 +142,8 @@ bool Utils::isStringDate(const std::string s)
     try
     {
         
-        d = std::stoi(s.substr(0, 2));
-        m = std::stoi(s.substr(3, 4));
+        d = s.at(0) == '0' ? std::stoi(std::string(1, s.at(1))) : std::stoi(s.substr(0, 2));
+        m = s.at(3) == '0' ? std::stoi(std::string(1, s.at(4))): std::stoi(s.substr(3, 4));
         y = std::stoi(s.substr(6, 9));
 
     }
@@ -195,5 +198,23 @@ bool Utils::isStringDate(const std::string s)
     }
 
 	return true;
+
+}
+
+// GetCurrentDateAsString() returns the current date as a string
+// of the following format: DD-MM-YYYY.
+const std::string Utils::getCurrentDateAsString()
+{
+
+    const boost::posix_time::ptime localTime = boost::posix_time::second_clock::local_time();
+    const boost::gregorian::date curDate = localTime.date();
+    const boost::gregorian::greg_day& greg_day_component = curDate.day();
+    const boost::gregorian::greg_month& greg_month_component = curDate.month();
+    const boost::gregorian::greg_year& greg_year_component = curDate.year();
+    const std::string dayComponent = std::to_string(greg_day_component);
+    const std::string monthComponent = greg_month_component.as_number() < 10 ? "0" + std::to_string(greg_month_component.as_number()) : std::to_string(greg_month_component.as_number());
+    const std::string yearComponent = std::to_string(greg_year_component);
+    const std::string strCurDate = dayComponent + "-" + monthComponent + "-" + yearComponent;
+    return strCurDate;
 
 }

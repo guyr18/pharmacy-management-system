@@ -50,6 +50,10 @@ class Utils
         // And otherwise, false.
         bool isStringDate(const std::string s);
 
+        // GetCurrentDateAsString() returns the current date as a string
+        // of the following format: DD-MM-YYYY.
+        const std::string getCurrentDateAsString();
+
 };
 
 #endif

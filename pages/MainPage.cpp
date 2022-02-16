@@ -73,6 +73,12 @@ void MainPage::monitor()
         {
 
             
+            /*
+            system("clear");
+            Pages::getInstance().DSP.log();
+            Pages::getInstance().DSP.monitor();
+            */
+           
         }
         else if(input == "7") // Exit application.
         {
