@@ -59,6 +59,7 @@ void BuyMedicinePage::monitor()
                     boost::tuple<int, int> tup = boost::make_tuple(temp, m._qty - 1);
                     idVect.push_back(temp);
                     newQty.push_back(tup);
+                    m._qty = m._qty - 1;
 
                 }
                 else

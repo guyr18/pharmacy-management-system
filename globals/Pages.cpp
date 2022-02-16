@@ -5,6 +5,7 @@
 #include "../pages/headers/AddStockPage.h"
 #include "../pages/headers/FindItemPage.h"
 #include "../pages/headers/UpdateStockPage.h"
+#include "../pages/headers/DeleteStockPage.h"
 
 class Pages
 {
@@ -37,5 +38,6 @@ class Pages
         AddStockPage ASP; // AddStockPage copy.
         FindItemPage FIP; // FindItemPage copy.
         UpdateStockPage USP; // UpdateStockPage copy.
+        DeleteStockPage DSP; // DeleteStockPage copy.
 
 };

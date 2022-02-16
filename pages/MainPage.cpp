@@ -4,6 +4,7 @@
 #include "AddStockPage.cpp"
 #include "FindItemPage.cpp"
 #include "UpdateStockPage.cpp"
+#include "DeleteStockPage.cpp"
 #include "headers/MainPage.h"
 #include <string>
 #include <iostream>
@@ -72,12 +73,9 @@ void MainPage::monitor()
         else if(input == "6") // Delete product from database.
         {
 
-            
-            /*
             system("clear");
             Pages::getInstance().DSP.log();
             Pages::getInstance().DSP.monitor();
-            */
            
         }
         else if(input == "7") // Exit application.

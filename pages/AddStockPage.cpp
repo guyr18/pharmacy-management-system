@@ -73,7 +73,7 @@ void AddStockPage::monitor()
     }
 
 
-    std::string q1 = "INSERT INTO public.medicines(id, name, \"ownedBy\", \"arrivalDate\", \"expireDate\", price, qty) VALUES (";
+    std::string q1 = "INSERT INTO public.medicines(id, name, \"owned_by\", \"arrival_date\", \"expire_date\", price, qty) VALUES (";
     std::string q2 = std::to_string(m._id) + ", \'" + m._name + "\', \'" + m._ownedBy + "\', \'" + m._arrivalDate + "\', \'" + m._expirationDate
                      + "\', " + std::to_string(castedPrice) + ", " + std::to_string(castedQty) + ");";
     std::string q3 = q1 + q2;
