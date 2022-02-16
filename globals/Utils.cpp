@@ -2,7 +2,10 @@
 #include "headers/Utils.h"
 #include <iostream>
 #include <string>
+#include <locale>
 #include <boost/tuple/tuple.hpp>
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/scoped_ptr.hpp>
 
 // Default constructor / destructor.
 Utils::Utils() {}
@@ -94,7 +97,6 @@ bool Utils::isStringInteger(const std::string s)
     try
     {
 
-
         int temp = std::stoi(s);
         return true;
 
@@ -105,4 +107,93 @@ bool Utils::isStringInteger(const std::string s)
         return false;
 
     }
+}
+
+// IsLeap(year) returns true if year is a leap year. And otherwise, false.
+//
+// This is a modified implementation of the following article: https://www.geeksforgeeks.org/program-check-date-valid-not/
+bool Utils::isLeap(int year)
+{
+
+    return (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0));
+    
+}
+
+// IsStringDate(s) return true if s represents a date of the following format: DD-MM-YYYY.
+// And otherwise, false. DD-MM-YYYY
+// 
+// This is a modified implementation of the following article: https://www.geeksforgeeks.org/program-check-date-valid-not/
+bool Utils::isStringDate(const std::string s)
+{
+
+    if(s.length() != 10)
+    {
+
+        return false;
+
+    }
+
+    // DD-MM-YYYY
+    int d, m, y = -1;
+    
+    try
+    {
+        
+        d = std::stoi(s.substr(0, 2));
+        m = std::stoi(s.substr(3, 4));
+        y = std::stoi(s.substr(6, 9));
+
+    }
+    catch(const std::exception& e)
+    {
+
+        return false;
+
+    }
+    
+	if (y > 9999 || y < 1800)
+    {
+
+	    return false;
+
+    }
+
+	if (m < 1 || m > 12)
+    {
+
+	    return false;
+
+    }
+
+	if (d < 1 || d > 31)
+    {
+
+	    return false;
+
+    }
+
+	if (m == 2)
+	{
+		if (isLeap(y))
+        {
+
+		    return (d <= 29);
+
+        }
+		else
+        {
+
+		    return (d <= 28);
+
+        }
+	}
+
+	if (m == 4 || m == 6 || m == 9 || m == 11)
+    {
+		return (d <= 30);
+
+    }
+
+	return true;
+
 }

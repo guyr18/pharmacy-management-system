@@ -39,7 +39,16 @@ class Utils
         bool isStringDouble(const std::string s);
 
         // IsStringInteger(s) returns true if s represents an integer. And otherwise, false.
-        bool isStringInteger(const std::string s);    
+        bool isStringInteger(const std::string s);   
+
+        // IsLeap(year) returns true if year is a leap year. And otherwise, false.
+        //
+        // This is a modified implementation of the following article: https://www.geeksforgeeks.org/program-check-date-valid-not/
+        bool isLeap(int year);
+        
+        // IsStringDate(s) return true if s represents a date of the following format: DD-MM-YYYY.
+        // And otherwise, false.
+        bool isStringDate(const std::string s);
 
 };
 

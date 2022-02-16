@@ -62,6 +62,10 @@ void MainPage::monitor()
         else if(input == "5") // Update product attribute.
         {
 
+            system("clear");
+            Pages::getInstance().USP.log();
+            Pages::getInstance().USP.monitor();
+            
 
         }
         else if(input == "6") // Delete product from database.

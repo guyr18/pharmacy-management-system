@@ -4,7 +4,7 @@
 #include "../pages/headers/BuyMedicinePage.h"
 #include "../pages/headers/AddStockPage.h"
 #include "../pages/headers/FindItemPage.h"
-//#include "../pages/headers/UpdateStockPage.h"
+#include "../pages/UpdateStockPage.cpp"
 
 class Pages
 {
@@ -36,6 +36,6 @@ class Pages
         BuyMedicinePage BMP; // BuyMedicinePage copy.
         AddStockPage ASP; // AddStockPage copy.
         FindItemPage FIP; // FindItemPage copy.
-       // UpdateStockPage USP; // UpdateStockPage copy.
+        UpdateStockPage USP; // UpdateStockPage copy.
 
 };
