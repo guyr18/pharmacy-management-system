@@ -27,13 +27,22 @@ int main(int argc, char* argv[])
     }
 
     dbc.connObj->disconnect();
-    ref.bubbleSortById();
+
+    if(MedicineManager::getInstance().getData().size() > 1)
+    {
+
+        ref.bubbleSortById();
+
+    }
     
     // Log main menu.
     Pages::getInstance().MAIN.log();
 
     // Await input.
     Pages::getInstance().MAIN.monitor();
+
+    // Free memory allocated to SQLConnection object.
+    dbc.connObj.reset();
     return 0;
 
 }

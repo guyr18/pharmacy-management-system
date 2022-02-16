@@ -23,9 +23,14 @@ void BuyMedicinePage::monitor()
 
     boost::container::vector<int> idVect;
     boost::container::vector<boost::tuple<int, int>> newQty;
+    bool emptyCache = MedicineManager::getInstance().getData().size() == 0;
     std::string id;
     std::cin.ignore();
 
+    if(!emptyCache)
+    {
+
+    
     while(true)
     {
 
@@ -114,6 +119,9 @@ void BuyMedicinePage::monitor()
     }
 
     conn.disconnect();
+
+    }
+
     std::cout << std::endl << "Press 'm' to return to the main menu..." << std::endl;
     std::string input;
 
@@ -158,6 +166,18 @@ void BuyMedicinePage::log()
 
     }
 
-    std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+    bool emptyCache = cache.size() == 0;
+
+    if(emptyCache)
+    {
+
+        std::cout << "There are no products currently in the database." << std::endl;
+
+    }
+    else
+    {
     
+        std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+    
+    }
 }

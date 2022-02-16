@@ -49,6 +49,7 @@ void ShowItemListPage::monitor()
 void ShowItemListPage::log()
 {
 
+    std::cout << "Item List Center" << std::endl;
     MedicineManager& ref = MedicineManager::getInstance();
     boost::container::vector<Medicine> cache = ref.getData();
     int count = 0;
@@ -62,7 +63,19 @@ void ShowItemListPage::log()
 
     }
 
-    std::cout << "------------------------------------------------------------------------------------------------------------------" << std::endl;
+    if(cache.size() == 0)
+    {
+
+        std::cout << std::endl << "There are no products currently in the database." << std::endl;
+        
+    }
+    else
+    {
+
+        std::cout << "------------------------------------------------------------------------------------------------------------------" << std::endl;
+
+    }
+
     std::cout << std::endl << "Press 'm' to return to the main menu..." << std::endl;
   
 }

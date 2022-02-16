@@ -34,7 +34,11 @@ void UpdateStockPage::monitor()
     const size_t n = MedicineManager::getInstance().getData().size();
     std::string id;
     int convId;
+    bool emptyCache = n == 0;
     std::cin.ignore();
+
+    if(!emptyCache)
+    {
 
     while(true)
     {
@@ -174,12 +178,26 @@ void UpdateStockPage::monitor()
     }
 
     std::cout << std::endl << "Update successful." << std::endl;
-    std::cout << std::endl << "Press 'm' to return to the main menu or 'u' to update a new item..." << std::endl;
+
+    }
+
+    if(emptyCache)
+    {
+
+        std::cout << std::endl << "Press 'm' to return to the main menu.." << std::endl;
+
+    } 
+    else
+    {
+
+        std::cout << std::endl << "Press 'm' to return to the main menu or 'u' to update a new item..." << std::endl;
+
+    }
+
     std::string input;
     bool updateReq = false;
-
-
-    while(true)
+    
+    while(true && !emptyCache)
     {
         
 
@@ -196,6 +214,23 @@ void UpdateStockPage::monitor()
         {
 
             updateReq = true;
+            break;
+
+        }
+
+        std::cout << "Invalid key pressed; you pressed " << input << std::endl;
+
+    }
+
+    while(true && emptyCache)
+    {
+        
+
+        std::cin >> input;
+
+        if(input == "m")
+        {
+
             break;
 
         }
@@ -237,10 +272,21 @@ void UpdateStockPage::log()
 
     }
 
-    std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-    
-}
+    bool emptyCache = cache.size() == 0;
 
+    if(!emptyCache)
+    {
+
+        std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+
+    }
+    else
+    {
+
+        std::cout << std::endl << "There are no products currently in the database." << std::endl;
+
+    }
+}
 
 // GetQueryableTuple(index) returns a two element boost::tuple that contains the queryable field 
 // for the question located at the ith index of @see _questions and a constant representing the

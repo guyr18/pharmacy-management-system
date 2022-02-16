@@ -22,10 +22,11 @@ void FindItemPage::monitor()
 
     int mode = -1;
     bool firstPhase = true;
+    bool emptyCache = MedicineManager::getInstance().getData().size() == 0;
     std::string input;
     std::cin.ignore();
 
-    while(firstPhase)
+    while(firstPhase && !emptyCache)
     {
 
         std::cout << std::endl << "Press 1 to search by ID or 2 to search by name (or prefix); any value not 1 or 2 will assume 2." << std::endl;
@@ -62,26 +63,49 @@ void FindItemPage::monitor()
         }
     }
     
-    // Search by ID.
-    if(mode == 1)
+    // No search should happen if the cache is empty.
+    if(!emptyCache)
     {
 
-        idSearchHandler();
+        // Search by ID.
+        if(mode == 1)
+        {
 
-    // Search by name.
+            idSearchHandler();
+
+        // Search by name.
+        }
+        else
+        {
+
+            nameSearchHandler();
+
+        }
     }
     else
     {
 
-       nameSearchHandler();
+        std::cout << std::endl << "There are no products currently in the database." << std::endl;
 
     }
 
-    std::cout << std::endl << "Press 'm' to return to the main menu or press 'l' to look up another item." << std::endl;
+    if(!emptyCache)
+    {
+
+        std::cout << std::endl << "Press 'm' to return to the main menu or press 'l' to look up another item." << std::endl;
+
+    }
+    else
+    {
+
+        std::cout << std::endl << "Press 'm' to return to the main menu.." << std::endl;
+
+    }
+
     std::string input2;
     bool lookupReq = false;
 
-    while(true)
+    while(true && !emptyCache)
     {
         
 
@@ -98,6 +122,23 @@ void FindItemPage::monitor()
         {
 
             lookupReq = true;
+            break;
+
+        }
+
+        std::cout << "Invalid key pressed; you pressed " << input2 << std::endl;
+
+    }
+
+    while(true && emptyCache)
+    {
+        
+
+        std::cin >> input2;
+
+        if(input2 == "m")
+        {
+
             break;
 
         }
@@ -162,6 +203,7 @@ void FindItemPage::idSearchHandler()
 
     const Medicine& m = MedicineManager::getInstance().getById(convId);
     m.print(Medicine::L_ALL, true);
+    std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
   
 }
 
@@ -169,8 +211,7 @@ void FindItemPage::idSearchHandler()
 void FindItemPage::nameSearchHandler()
 {
 
-
-     boost::container::vector<Medicine> prefixes;
+        boost::container::vector<Medicine> prefixes;
         std::string prefix;
         std::cout << std::endl << "Enter a name or prefix of a product to search for: ";
         std::getline(std::cin, prefix);
