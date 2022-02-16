@@ -51,6 +51,15 @@ class MedicineManager
         // a bubble sort algorithm on the variable _id.
         void bubbleSortById();
 
+        // SyncItemProperty(id, field) locates the Medicine object with a
+        // unique identifier of id and sets it member variable field to 
+        // val.
+        void syncItemProperty(const unsigned int id, const std::string field, const std::string val);
+
+        void syncItemProperty(const unsigned int id, const std::string field, const double val);
+
+        void syncItemProperty(const unsigned int id, const std::string field, const int val);
+
         // GetData() returns the cached list of Medicine object(s), @see _data.
         boost::container::vector<Medicine>& getData();
     

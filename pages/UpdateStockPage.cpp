@@ -264,21 +264,21 @@ boost::shared_ptr<boost::tuple<std::string, unsigned int>> UpdateStockPage::getQ
     else if(index == 1)
     {
 
-        strFieldName = "ownedBy";
+        strFieldName = "owned_by";
         intDataType = _FLAG_ALL_TYPES;
 
     }
     else if(index == 2)
     {
 
-        strFieldName = "arrivalDate";
+        strFieldName = "arrival_date";
         intDataType = _FLAG_DATE_ONLY;
 
     }
     else if(index == 3)
     {
 
-        strFieldName = "expirationDate";
+        strFieldName = "expire_date";
         intDataType = _FLAG_DATE_ONLY;
 
     }
@@ -313,12 +313,17 @@ void UpdateStockPage::updateField(unsigned int& index, const std::string strId, 
     const unsigned int intDataType = p.get()->get<1>();
     SQLConnection& conn = *DBConfig::getInstance().connObj.get();
     std::string q;
-    
+
     // These are represented as strings in the database so we need to
     // escape using backslash.
     if(intDataType == _FLAG_ALL_TYPES || intDataType == _FLAG_DATE_ONLY)
     {
 
+
+        // Sync the item in the MedicineManager class such that it is consistent with
+        // the new change in the database; eliminates need to parse all relations
+        // from database again.
+        MedicineManager::getInstance().syncItemProperty(std::stoi(strId), strFieldName, answer);
         q = "UPDATE public.medicines SET " + strFieldName + "=\'" + answer + "\' WHERE id=" + strId + ";";
 
     // This case represents integers or doubles so assigning these values to the corresponding field
@@ -326,7 +331,27 @@ void UpdateStockPage::updateField(unsigned int& index, const std::string strId, 
     }
     else
     {
+        
+        if(intDataType == _FLAG_DBL_ONLY)
+        {
 
+         
+            // Sync the item in the MedicineManager class such that it is consistent with
+            // the new change in the database; eliminates need to parse all relations
+            // from database again.
+            MedicineManager::getInstance().syncItemProperty(std::stoi(strId), strFieldName, std::stod(answer));
+
+        }
+        else
+        {
+
+            // Sync the item in the MedicineManager class such that it is consistent with
+            // the new change in the database; eliminates need to parse all relations
+            // from database again.
+            MedicineManager::getInstance().syncItemProperty(std::stoi(strId), strFieldName, std::stoi(answer));
+
+        }
+        
         q = "UPDATE public.medicines SET " + strFieldName + "=" + answer + " WHERE id=" + strId + ";";
 
     }

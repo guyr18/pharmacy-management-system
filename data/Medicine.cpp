@@ -71,8 +71,8 @@ void Medicine::print(const unsigned int level, bool printHeader) const
         std::cout << _expirationDate;
         Utils::getInstance().printNSpaces(Utils::getInstance().abs(_expirationDate.size() - 20));
         std::cout << "| ";
-        std::cout << _price;
-        Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(_price).size() - 22));
+        std::cout << std::fixed << std::setprecision(2) << _price;
+        Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(_price).size() - 19));
         std::cout << "| ";
         std::cout << _qty;
         Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(_qty).size() - 13));
@@ -106,8 +106,8 @@ void Medicine::print(const unsigned int level, bool printHeader) const
         std::cout << _expirationDate;
         Utils::getInstance().printNSpaces(Utils::getInstance().abs(_expirationDate.size() - 20));
         std::cout << "| ";
-        std::cout << _price;
-        Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(_price).size() - 22));
+        std::cout << std::fixed << std::setprecision(2) << _price;
+        Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(_price).size() - 19));
         std::cout << "| ";
         std::cout << _qty;
         Utils::getInstance().printNSpaces(Utils::getInstance().abs(std::to_string(_qty).size() - 14));

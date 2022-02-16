@@ -141,6 +141,80 @@ void MedicineManager::bubbleSortById()
     }
  }
 
+// SyncItemProperty(id, field) locates the Medicine object with a
+// unique identifier of id and sets it member variable field to 
+// val.
+void MedicineManager::syncItemProperty(const unsigned int id, const std::string field, const std::string val)
+{
+
+    Medicine& ref = this->getById(id);
+
+    if(field == "name")
+    {
+
+        ref._name = val;
+
+    }
+    else if(field == "arrival_date")
+    {
+
+        ref._arrivalDate = val;
+
+    }
+    else if(field == "expire_date")
+    {
+
+        ref._expirationDate = val;
+
+    }
+    else
+    {
+
+        std::cerr << "Invalid field name specified." << std::endl;
+
+    }
+}
+
+void MedicineManager::syncItemProperty(const unsigned int id, const std::string field, const double val)
+{
+
+    Medicine& ref = this->getById(id);
+
+    if(field == "price")
+    {
+
+        ref._price = val;
+
+    }
+    else
+    {
+
+        std::cerr << "Invalid field name specified." << std::endl;
+        
+    }
+}
+
+
+void MedicineManager::syncItemProperty(const unsigned int id, const std::string field, const int val)
+{
+
+
+    Medicine& ref = this->getById(id);
+
+    if(field == "qty")
+    {
+
+        ref._price = val;
+
+    }
+    else
+    {
+
+        std::cerr << "Invalid field name specified." << std::endl;
+        
+    }
+}
+
 // GetData() returns the cached list of Medicine object(s), @see _data.
 boost::container::vector<Medicine>& MedicineManager::getData()
 {
