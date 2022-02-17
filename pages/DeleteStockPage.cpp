@@ -157,6 +157,7 @@ void DeleteStockPage::monitor()
     else
     {
 
+        MedicineManager::getInstance().bubbleSortById();
         system("clear");
         Pages::getInstance().MAIN.log();
         
