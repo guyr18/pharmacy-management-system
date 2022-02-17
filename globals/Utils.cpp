@@ -76,6 +76,15 @@ boost::shared_ptr<boost::tuple<std::string, std::string>> Utils::splitBy(const s
 bool Utils::isStringDouble(const std::string s)
 {
 
+    // The minimum possible double would be three characters
+    // if we consider the decimal point; i.e.: 0.2, 5.0
+    if(s.size() < 3)
+    {
+
+        return false;
+
+    }
+
     try
     {
         
@@ -104,7 +113,7 @@ bool Utils::isStringInteger(const std::string s)
     }
     catch(const std::exception& e)
     {
-        
+   
         return false;
 
     }
@@ -130,6 +139,15 @@ bool Utils::isStringDate(const std::string s)
     // Under this format, the length of a valid date string should be fixed to 10.
     // Any more or less than 10 would be invalid, return false.
     if(s.length() != 10)
+    {
+
+        return false;
+
+    }
+
+    // These locations are fixed and should always have a hypen character at this 
+    // position. If they do not, return false.
+    if(s.at(2) != '-' || s.at(5) != '-')
     {
 
         return false;
