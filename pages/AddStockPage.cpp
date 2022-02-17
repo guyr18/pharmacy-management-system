@@ -205,9 +205,8 @@ void AddStockPage::monitor()
     conn.insert(q3);
     conn.disconnect();
     MedicineManager::getInstance().add(newMedicineObject);
-    
-    // Including the newest item added, do we have at least two items to sort?
-    if((n + 1) > 1)
+
+    if((n + 1) > 2)
     {
 
         MedicineManager::getInstance().bubbleSortById();

@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 
     dbc.connObj->disconnect();
 
-    if(MedicineManager::getInstance().getData().size() > 1)
+    if(ref.getData().size() > 2)
     {
 
         ref.bubbleSortById();

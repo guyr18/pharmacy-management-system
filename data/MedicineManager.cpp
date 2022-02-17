@@ -124,12 +124,12 @@ bool MedicineManager::isUniqueName(const std::string name)
     
 }
 
-// BubbleSortById() sorts @see _data in ascending order using
-// a bubble sort algorithm on the variable _id.
+// BubbleSortById() sorts @see _data in ascending order using a bubble sort
+// algorithm.
 void MedicineManager::bubbleSortById()
 {
 
-    size_t n = _data.size();
+    const size_t n = _data.size();
 
     for(int i = 0; i < n - 1; i++)
     {
@@ -145,7 +145,7 @@ void MedicineManager::bubbleSortById()
             }
         }
     }
- }
+}
 
 // SyncItemProperty(id, field) locates the Medicine object with a
 // unique identifier of id and sets it member variable field to 

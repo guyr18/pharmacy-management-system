@@ -15,6 +15,8 @@ class UpdateStockPage : public ITerminalPage
         const unsigned int _FLAG_INT_ONLY = 1;
         const unsigned int _FLAG_DBL_ONLY = 2;
         const unsigned int _FLAG_DATE_ONLY = 3;
+        const unsigned int _MIN_ALL_SIZE = 3;
+        const unsigned int _MAX_ALL_SIZE = 16;
         boost::container::vector<boost::tuple<std::string, unsigned int>> _questions;        
        
         // GetQueryableTuple(index) returns a two element boost::tuple that contains the queryable field 

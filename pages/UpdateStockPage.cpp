@@ -17,7 +17,7 @@ UpdateStockPage::UpdateStockPage()
     _questions.push_back(boost::make_tuple<std::string, unsigned int>("Enter Product Name (x not to change): ", _FLAG_ALL_TYPES));
     _questions.push_back(boost::make_tuple<std::string, unsigned int>("Enter Company Name (x not to change): ", _FLAG_ALL_TYPES));
     _questions.push_back(boost::make_tuple<std::string, unsigned int>("Enter Arrival Date (x not to change); DD-MM-YYYY: ", _FLAG_DATE_ONLY));
-    _questions.push_back(boost::make_tuple<std::string, unsigned int>("Enter Expiration Date (x not to change); DD-MM-YYYY ", _FLAG_DATE_ONLY));
+    _questions.push_back(boost::make_tuple<std::string, unsigned int>("Enter Expiration Date (x not to change); DD-MM-YYYY: ", _FLAG_DATE_ONLY));
     _questions.push_back(boost::make_tuple<std::string, unsigned int>("Enter Price (x not to change): ", _FLAG_DBL_ONLY));
     _questions.push_back(boost::make_tuple<std::string, unsigned int>("Enter Quantity (x not to change): ", _FLAG_INT_ONLY));
 
@@ -34,6 +34,7 @@ void UpdateStockPage::monitor()
     const size_t n = MedicineManager::getInstance().getData().size();
     std::string id;
     int convId;
+    unsigned int maxId = n == 0 ? 1 : MedicineManager::getInstance().getData().at(n - 1)._id;
     bool emptyCache = n == 0;
     std::cin.ignore();
 
@@ -43,7 +44,7 @@ void UpdateStockPage::monitor()
     while(true)
     {
 
-        std::cout << "Enter Product ID: ";
+        std::cout << std::endl << "Enter Product ID: ";
         std::getline(std::cin, id);
         bool isInt = Utils::getInstance().isStringInteger(id);
 
@@ -59,7 +60,7 @@ void UpdateStockPage::monitor()
 
             convId = std::stoi(id);
 
-            if(convId >= 1 && convId <= n)
+            if(convId >= 1 && convId <= maxId && MedicineManager::getInstance().getById(convId)._id > 0)
             {
 
                 break;
@@ -94,7 +95,7 @@ void UpdateStockPage::monitor()
         const boost::tuple<std::string, unsigned int> tup = _questions[curQuestionIndex];
         const std::string strQuestion = tup.get<0>();
         const unsigned int intFlag = tup.get<1>();
-        std::cout << strQuestion;
+        std::cout << std::endl << strQuestion;
         std::getline(std::cin, answer);
 
         // If we get an "x", skip this question, do not update the field.
@@ -109,7 +110,24 @@ void UpdateStockPage::monitor()
         else if(intFlag == _FLAG_ALL_TYPES)
         {
 
-            updateField(curQuestionIndex, id, answer);
+            if(answer.size() < _MIN_ALL_SIZE || answer.size() > _MAX_ALL_SIZE)
+            {
+
+                std::cout << std::endl << "Product Name and Company Name input must be between " << _MIN_ALL_SIZE << " and " << _MAX_ALL_SIZE << " characters." << std::endl;
+
+            }
+            else if(curQuestionIndex == 0 && !MedicineManager::getInstance().isUniqueName(answer))
+            {
+
+                std::cout << std::endl << "Invalid product name specified; please enter a unique name." << std::endl;
+
+            }
+            else
+            {
+
+                updateField(curQuestionIndex, id, answer);
+
+            }
 
         // Only accept integers; validate that this is a integer, if so take it.
         // If not, print an error message and ask the question again.
@@ -128,7 +146,7 @@ void UpdateStockPage::monitor()
             else
             {
 
-                std::cout << "Invalid value provided; only integers are allowed." << std::endl;
+                std::cout << std::endl << "Invalid value provided; only integers are allowed." << std::endl;
 
             }
 
@@ -148,7 +166,7 @@ void UpdateStockPage::monitor()
             else
             {
 
-                std::cout << "Invalid value provided; only decimal numbers are allowed." << std::endl;
+                std::cout << std::endl << "Invalid value provided; only decimal numbers are allowed." << std::endl;
 
             }
         
@@ -168,7 +186,7 @@ void UpdateStockPage::monitor()
             else
             {
 
-                std::cout << "Invalid value provided; only dates of format DD-MM-YYYY are accepted." << std::endl;
+                std::cout << std::endl << "Invalid value provided; only dates of format DD-MM-YYYY are accepted." << std::endl;
 
             }
         }

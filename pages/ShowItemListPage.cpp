@@ -58,7 +58,7 @@ void ShowItemListPage::log()
     {
 
         bool printHeader = count == 0 ? true : false;
-        m.print(Medicine::L_ALL_EXCL_ID, printHeader);
+        m.print(Medicine::L_ALL, printHeader);
         count++;
 
     }
@@ -72,7 +72,7 @@ void ShowItemListPage::log()
     else
     {
 
-        std::cout << "------------------------------------------------------------------------------------------------------------------" << std::endl;
+        std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
 
     }
 
