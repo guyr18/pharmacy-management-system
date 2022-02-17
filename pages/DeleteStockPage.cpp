@@ -46,14 +46,14 @@ void DeleteStockPage::monitor()
             else
             {
 
-                std::cout << "Invalid value specified for Product ID; ID out of bounds." << std::endl;
+                std::cout << std::endl << "Invalid value specified for Product ID; ID out of bounds." << std::endl;
 
             }
         }
         else
         {
 
-            std::cout << "Invalid value specified for Product ID; please enter an integer value." << std::endl;
+            std::cout << std::endl << "Invalid value specified for Product ID; please enter an integer value." << std::endl;
             continue;
 
         }
@@ -67,7 +67,7 @@ void DeleteStockPage::monitor()
     while(true && !emptyCache)
     {
 
-        std::cout << "Are you sure you would like to delete Product [ID=" << intId << "]? This CANNOT BE UNDONE. (y / n): ";
+        std::cout << std::endl << "Are you sure you would like to delete Product [ID=" << intId << "]? This CANNOT BE UNDONE. (y / n): ";
         std::getline(std::cin, confirmation);
             
         if(confirmation == "Y" || confirmation == "y")
@@ -119,7 +119,7 @@ void DeleteStockPage::monitor()
 
         }
 
-        std::cout << "Invalid key pressed; you pressed " << input << std::endl;
+        std::cout << std::endl << "Invalid key pressed; you pressed " << input << std::endl;
 
     }
 
@@ -145,7 +145,7 @@ void DeleteStockPage::monitor()
 
         }
 
-        std::cout << "Invalid key pressed; you pressed " << input << std::endl;
+        std::cout << std::endl << "Invalid key pressed; you pressed " << input << std::endl;
 
     }
 
