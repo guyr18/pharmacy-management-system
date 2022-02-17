@@ -72,19 +72,36 @@ void MedicineManager::removeById(const unsigned int id)
 Medicine& MedicineManager::getById(const unsigned int id)
 {
 
-    for(Medicine& m : _data)
+    unsigned int left = 0;
+    unsigned int right = _data.size() - 1;
+
+    while(left <= right)
     {
 
-        if(m._id == id)
+        int mid = left + (right - left) / 2;
+
+        if(_data[mid]._id == id)
         {
 
-            return m;
+            return _data[mid];
 
+        }
+        else if(_data[mid]._id < id)
+        {
+
+            left = mid + 1;
+
+        }
+        else
+        {
+
+            right = mid - 1;
+            
         }
     }
 
     return DUMMY_MED;
-    
+
 }
 
 // IsUniqueName(name) returns false if a Medicine object has the name property == 'name'.

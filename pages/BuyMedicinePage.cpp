@@ -47,7 +47,7 @@ void BuyMedicinePage::monitor()
         {
             
             int temp = std::stoi(id);
-            Medicine m = MedicineManager::getInstance().getById(temp);
+            Medicine& m = MedicineManager::getInstance().getById(temp);
 
             if(temp >= 1 && m._id > 0)
             {
