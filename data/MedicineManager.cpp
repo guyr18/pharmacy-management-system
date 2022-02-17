@@ -45,18 +45,7 @@ void MedicineManager::add(const Medicine& m)
 bool MedicineManager::contains(const unsigned int id)
 {
 
-    for(const Medicine& obj : _data)
-    {
-
-        if(obj._id == id)
-        {
-
-            return true;
-
-        }
-    }
-
-    return false;
+    return getById(id)._id == id;
 
 }
 

@@ -198,5 +198,6 @@ void DeleteStockPage::handleDeleteRelation(const unsigned int& id)
     conn.connect();
     conn.fetch("DELETE * FROM public.medicines WHERE id=" + std::to_string(id));
     conn.disconnect();
+    MedicineManager::getInstance().removeById(id);
 
 }
