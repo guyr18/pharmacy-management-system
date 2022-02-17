@@ -11,7 +11,7 @@ class MedicineManager
 
 
         boost::container::vector<Medicine> _data; // List of Medicine objects.
-        Medicine DUMMY_MED;
+        Medicine DUMMY_MED{0, "", "", "", "", 0.0, 0};
 
         // MedicineManager object is a singleton; suppress constructors and assignments.
         MedicineManager();

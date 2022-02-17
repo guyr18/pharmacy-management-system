@@ -47,11 +47,10 @@ void BuyMedicinePage::monitor()
         {
             
             int temp = std::stoi(id);
+            Medicine m = MedicineManager::getInstance().getById(temp);
 
-            if(temp >= 1 && temp <= MedicineManager::getInstance().getData().size())
+            if(temp >= 1 && m._id > 0)
             {
-
-                Medicine& m = MedicineManager::getInstance().getById(temp);
 
                 if(m._qty > 0)
                 {
@@ -59,7 +58,7 @@ void BuyMedicinePage::monitor()
                     boost::tuple<int, int> tup = boost::make_tuple(temp, m._qty - 1);
                     idVect.push_back(temp);
                     newQty.push_back(tup);
-                    MedicineManager::getInstance().syncItemProperty(temp, "qty", (int)m._qty - 1);
+                    m._qty = m._qty - 1;
 
                 }
                 else
@@ -72,7 +71,7 @@ void BuyMedicinePage::monitor()
             else
             {
 
-                std::cout << "Invalid ID specified." << std::endl;
+                std::cout << "Invalid ID specified or item cannot be found." << std::endl;
 
             }
         }
@@ -104,7 +103,6 @@ void BuyMedicinePage::monitor()
 
         }
     }
-
 
     std::cout << "]" << std::endl;
     std::cout << std::fixed << std::setprecision(2) << "Total Purchase Price: " << totalPurchasePrice << std::endl;

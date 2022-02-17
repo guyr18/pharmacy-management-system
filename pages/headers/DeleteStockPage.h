@@ -6,6 +6,12 @@
 class DeleteStockPage : public ITerminalPage
 {
 
+    private:
+
+        // HandleDeleteRelation(id) deletes a relation from the appropriate database table
+        // given the primary key id.
+        void handleDeleteRelation(const unsigned int& id);
+
     public:
 
         // Default destructor.

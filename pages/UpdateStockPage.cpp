@@ -68,7 +68,7 @@ void UpdateStockPage::monitor()
             else
             {
 
-                std::cout << "ID specified is out of range; must be between 1 and " << n << std::endl;
+                std::cout << "ID specified is out of bounds." << std::endl;
 
             }
         }
