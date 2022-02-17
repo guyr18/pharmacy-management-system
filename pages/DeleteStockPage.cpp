@@ -22,12 +22,13 @@ void DeleteStockPage::monitor()
     std::string input;
     bool inputReq = false;
     int intId = -1;
+    std::cin.ignore();
 
     // Obtain product ID as input
     while(true && !emptyCache)
     {
 
-        std::cout << "Enter a Product ID to delete: ";
+        std::cout << std::endl << "Enter a Product ID to delete: ";
         std::getline(std::cin, input);
         bool isIdValid = Utils::getInstance().isStringInteger(input);
 
@@ -157,7 +158,15 @@ void DeleteStockPage::monitor()
     else
     {
 
-        MedicineManager::getInstance().bubbleSortById();
+        const size_t upd_size = MedicineManager::getInstance().getData().size();
+
+        if(upd_size > 1)
+        {
+
+            MedicineManager::getInstance().bubbleSortById();
+
+        }
+
         system("clear");
         Pages::getInstance().MAIN.log();
         
@@ -174,7 +183,7 @@ void DeleteStockPage::log()
     if(!emptyCache)
     {
 
-         MedicineManager& ref = MedicineManager::getInstance();
+        MedicineManager& ref = MedicineManager::getInstance();
         boost::container::vector<Medicine> cache = ref.getData();
         int count = 0;
     
@@ -186,6 +195,9 @@ void DeleteStockPage::log()
             count++;
 
         }
+
+        std::cout << "---------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+
     }
 }
 
@@ -196,7 +208,7 @@ void DeleteStockPage::handleDeleteRelation(const unsigned int& id)
 
     SQLConnection& conn = *DBConfig::getInstance().connObj.get();
     conn.connect();
-    conn.fetch("DELETE * FROM public.medicines WHERE id=" + std::to_string(id));
+    conn.fetch("DELETE FROM public.medicines WHERE id=" + std::to_string(id));
     conn.disconnect();
     MedicineManager::getInstance().removeById(id);
 
