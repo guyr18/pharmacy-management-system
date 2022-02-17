@@ -167,6 +167,12 @@ void MedicineManager::syncItemProperty(const unsigned int id, const std::string 
         ref._expirationDate = val;
 
     }
+    else if(field == "owned_by")
+    {
+
+        ref._ownedBy = val;
+
+    }
     else
     {
 
@@ -204,7 +210,7 @@ void MedicineManager::syncItemProperty(const unsigned int id, const std::string 
     if(field == "qty")
     {
 
-        ref._price = val;
+        ref._qty = val;
 
     }
     else

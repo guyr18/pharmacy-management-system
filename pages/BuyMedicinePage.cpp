@@ -59,7 +59,7 @@ void BuyMedicinePage::monitor()
                     boost::tuple<int, int> tup = boost::make_tuple(temp, m._qty - 1);
                     idVect.push_back(temp);
                     newQty.push_back(tup);
-                    m._qty = m._qty - 1;
+                    MedicineManager::getInstance().syncItemProperty(temp, "qty", (int)m._qty - 1);
 
                 }
                 else
@@ -82,7 +82,8 @@ void BuyMedicinePage::monitor()
     }
 
     std::cout << std::endl <<  "The following IDs were selected: [";
-    int i = 0, totalPurchasePrice = 0;
+    int i = 0;
+    double totalPurchasePrice;
 
     for(auto itr = idVect.begin(); itr != idVect.end(); itr++, i++)
     {
@@ -106,7 +107,7 @@ void BuyMedicinePage::monitor()
 
 
     std::cout << "]" << std::endl;
-    std::cout << "Total Purchase Price: " << totalPurchasePrice << std::endl;
+    std::cout << std::fixed << std::setprecision(2) << "Total Purchase Price: " << totalPurchasePrice << std::endl;
     SQLConnection& conn = *DBConfig::getInstance().connObj.get();
     conn.connect();
 
