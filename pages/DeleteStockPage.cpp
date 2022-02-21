@@ -158,15 +158,6 @@ void DeleteStockPage::monitor()
     else
     {
 
-        const size_t upd_size = MedicineManager::getInstance().getData().size();
-
-        if(upd_size > 2)
-        {
-
-            MedicineManager::getInstance().bubbleSortById();
-
-        }
-
         system("clear");
         Pages::getInstance().MAIN.log();
         

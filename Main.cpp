@@ -27,13 +27,6 @@ int main(int argc, char* argv[])
     }
 
     dbc.connObj->disconnect();
-
-    if(ref.getData().size() > 2)
-    {
-
-        ref.bubbleSortById();
-
-    }
     
     // Log main menu.
     Pages::getInstance().MAIN.log();

@@ -47,10 +47,6 @@ class MedicineManager
         // And otherwise, false.
         bool isUniqueName(const std::string name);
 
-        // BubbleSortById() sorts @see _data in ascending order using a bubble sort
-        // algorithm.
-        void bubbleSortById();
-
         // SyncItemProperty(id, field) locates the Medicine object with a
         // unique identifier of id and sets it member variable field to 
         // val.

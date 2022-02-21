@@ -205,14 +205,6 @@ void AddStockPage::monitor()
     conn.insert(q3);
     conn.disconnect();
     MedicineManager::getInstance().add(newMedicineObject);
-
-    if((n + 1) > 2)
-    {
-
-        MedicineManager::getInstance().bubbleSortById();
-
-    }
-
     system("clear");
     Pages::getInstance().MAIN.log();
     return;
