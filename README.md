@@ -1,4 +1,8 @@
 # Pharmacy Management System
+<p>
+  <img src=".readme/pharsys-a.png" width="350" title="Main Menu">
+   <img src=".readme/pharsys-b.png" width="350" height="118" title="Item List Display">
+</p>
 
 # Purpose
 Pharmacy Management System is a command-line application that is being developed to
