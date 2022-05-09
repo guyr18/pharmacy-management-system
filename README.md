@@ -53,7 +53,7 @@ this are as follows:
 The full command line statement that you should issue will follow the following format (assuming you are in the root directory):
 
 ```
-g++ Main.cpp -lpqxx -lpqx -o Main
+g++ Main.cpp -lpqxx -lpq -o Main
 ```
 Subsequently you may run the executable as: **./Main**
 Conclusively, it is possible you may encounter permission-based errors if you are not an adminstrator or super-user on your local machine.
@@ -61,6 +61,4 @@ To address this on a Linux or Unix based machine, you may use the chmod command 
 
 ```
 chmod +x Main
-
 ```
-
