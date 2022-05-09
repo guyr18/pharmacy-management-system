@@ -3,9 +3,14 @@
 #include "pages/MainPage.cpp"
 #include "pages/ShowItemListPage.cpp"
 #include "globals/DBConfig.cpp"
+#include <thread>
+#include <mutex>
 
-int main(int argc, char* argv[])
+void run()
 {
+
+    std::mutex myMutex; // Declare mutex.
+    myMutex.lock(); // Block until mutex is available.
 
     // Establish connection and cache table rows from state S where state S
     // is a snapshot of the table at the start of this application.
@@ -27,15 +32,25 @@ int main(int argc, char* argv[])
     }
 
     dbc.connObj->disconnect();
-    
-    // Log main menu.
+    myMutex.unlock(); // Unlock mutex so that it is available for other threads.
+
+}
+
+int main(int argc, char* argv[])
+{
+
+   
+    std::thread workerThread{run}; // Declare initial load thread.
+    workerThread.join(); // Block until it completes the callable.
+
+     // Log main menu.
     Pages::getInstance().MAIN.log();
 
     // Await input.
     Pages::getInstance().MAIN.monitor();
 
     // Free memory allocated to SQLConnection object.
-    dbc.connObj.reset();
+    DBConfig::getInstance().connObj.reset();
     return 0;
 
 }

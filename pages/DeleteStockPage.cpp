@@ -6,6 +6,8 @@
 #include "headers/DeleteStockPage.h"
 #include <string>
 #include <iostream>
+#include <thread>
+#include <mutex>
 
 // Default constructor.
 DeleteStockPage::DeleteStockPage() { }
@@ -74,7 +76,8 @@ void DeleteStockPage::monitor()
         {
 
             performDelete = true;
-            handleDeleteRelation(intId);
+            std::thread workerThread(&DeleteStockPage::handleDeleteRelation, this, std::ref(intId));
+            workerThread.join();
             break;
 
         }
@@ -197,10 +200,13 @@ void DeleteStockPage::log()
 void DeleteStockPage::handleDeleteRelation(const unsigned int& id)
 {
 
+    std::mutex myMutex;
+    myMutex.lock();
     SQLConnection& conn = *DBConfig::getInstance().connObj.get();
     conn.connect();
     conn.fetch("DELETE FROM public.medicines WHERE id=" + std::to_string(id));
     conn.disconnect();
     MedicineManager::getInstance().removeById(id);
+    myMutex.unlock();
 
 }

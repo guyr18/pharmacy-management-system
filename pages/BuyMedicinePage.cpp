@@ -9,6 +9,8 @@
 #include <iostream>
 #include <boost/container/vector.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <thread>
+#include <mutex>
 
 // Default constructor.
 BuyMedicinePage::BuyMedicinePage() {}
@@ -16,6 +18,27 @@ BuyMedicinePage::BuyMedicinePage() {}
 // Default destructor.
 BuyMedicinePage::~BuyMedicinePage() { }
 
+void handleBuy(boost::container::vector<boost::tuple<int, int>>& newQty)
+{
+
+    std::mutex myMutex;
+    myMutex.lock();
+    SQLConnection& conn = *DBConfig::getInstance().connObj.get();
+    conn.connect();
+
+    for(const boost::tuple<int, int> tup : newQty)
+    {
+
+        std::string strId = std::to_string(tup.get<0>());
+        std::string strQty = std::to_string(tup.get<1>());
+        conn.insert("UPDATE public.medicines SET qty=" + strQty + " WHERE id=" + strId + ";");
+
+    }
+
+    conn.disconnect();
+    myMutex.unlock();
+
+}
 
 // Monitor() monitors() user input.
 void BuyMedicinePage::monitor()
@@ -106,19 +129,8 @@ void BuyMedicinePage::monitor()
 
     std::cout << "]" << std::endl;
     std::cout << std::fixed << std::setprecision(2) << "Total Purchase Price: " << totalPurchasePrice << std::endl;
-    SQLConnection& conn = *DBConfig::getInstance().connObj.get();
-    conn.connect();
-
-    for(const boost::tuple<int, int> tup : newQty)
-    {
-
-        std::string strId = std::to_string(tup.get<0>());
-        std::string strQty = std::to_string(tup.get<1>());
-        conn.insert("UPDATE public.medicines SET qty=" + strQty + " WHERE id=" + strId + ";");
-
-    }
-
-    conn.disconnect();
+    std::thread workerThread(handleBuy, std::ref(newQty));
+    workerThread.join();
 
     }
 

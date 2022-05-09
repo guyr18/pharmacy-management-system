@@ -6,6 +6,8 @@
 #include <boost/date_time.hpp>
 #include <string>
 #include <iostream>
+#include <thread>
+#include <mutex>
 
 // Default constructor.
 AddStockPage::AddStockPage()
@@ -23,6 +25,27 @@ AddStockPage::AddStockPage()
 // Default destructor.
 AddStockPage::~AddStockPage() { }
 
+void handleAdd(Medicine& newMedicineObject)
+{
+
+    std::mutex myMutex;
+    myMutex.lock();
+    const size_t n = MedicineManager::getInstance().getData().size();
+    newMedicineObject._id = n == 0 ? 1 : MedicineManager::getInstance().getData().at(n - 1)._id + 1;
+
+    std::string q1 = "INSERT INTO public.medicines(id, name, \"owned_by\", \"arrival_date\", \"expire_date\", price, qty) VALUES (";
+    std::string q2 = std::to_string(newMedicineObject._id) + ", \'" + newMedicineObject._name + "\', \'" + newMedicineObject._ownedBy + "\', \'" + newMedicineObject._arrivalDate + "\', \'" + newMedicineObject._expirationDate
+                     + "\', " + std::to_string(newMedicineObject._price) + ", " + std::to_string(newMedicineObject._qty) + ");";
+    std::string q3 = q1 + q2;
+
+    SQLConnection& conn = *DBConfig::getInstance().connObj.get();
+    conn.connect();
+    conn.insert(q3);
+    conn.disconnect();
+    MedicineManager::getInstance().add(newMedicineObject);
+    myMutex.unlock();
+
+}
 
 // Monitor() monitors() user input.
 void AddStockPage::monitor()
@@ -191,20 +214,8 @@ void AddStockPage::monitor()
         }
     }
 
-    // A valid primary key (id) would be the maximum ID currently cached + 1.
-    const size_t n = MedicineManager::getInstance().getData().size();
-    newMedicineObject._id = n == 0 ? 1 : MedicineManager::getInstance().getData().at(n - 1)._id + 1;
-
-    std::string q1 = "INSERT INTO public.medicines(id, name, \"owned_by\", \"arrival_date\", \"expire_date\", price, qty) VALUES (";
-    std::string q2 = std::to_string(newMedicineObject._id) + ", \'" + newMedicineObject._name + "\', \'" + newMedicineObject._ownedBy + "\', \'" + newMedicineObject._arrivalDate + "\', \'" + newMedicineObject._expirationDate
-                     + "\', " + std::to_string(newMedicineObject._price) + ", " + std::to_string(newMedicineObject._qty) + ");";
-    std::string q3 = q1 + q2;
-
-    SQLConnection& conn = *DBConfig::getInstance().connObj.get();
-    conn.connect();
-    conn.insert(q3);
-    conn.disconnect();
-    MedicineManager::getInstance().add(newMedicineObject);
+    std::thread workerThread(handleAdd, std::ref(newMedicineObject));
+    workerThread.join();
     system("clear");
     Pages::getInstance().MAIN.log();
     return;

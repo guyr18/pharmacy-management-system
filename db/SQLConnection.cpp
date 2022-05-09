@@ -92,8 +92,6 @@ void SQLConnection::disconnect()
 
 }
 
-
-
 // Fetch(q) executes a query q returns the result as pqxx::result object.
 pqxx::result SQLConnection::fetch(const std::string q)
 {

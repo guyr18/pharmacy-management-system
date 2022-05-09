@@ -9,6 +9,8 @@
 #include <boost/shared_ptr.hpp>
 #include <string>
 #include <iostream>
+#include <thread>
+#include <mutex>
 
 // Default constructor.
 UpdateStockPage::UpdateStockPage()
@@ -125,7 +127,8 @@ void UpdateStockPage::monitor()
             else
             {
 
-                updateField(curQuestionIndex, id, answer);
+                std::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                workerThread.join();
 
             }
 
@@ -140,7 +143,8 @@ void UpdateStockPage::monitor()
             if(isValidInt)
             {
 
-                updateField(curQuestionIndex, id, answer);
+                std::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                workerThread.join();
 
             }
             else
@@ -160,7 +164,8 @@ void UpdateStockPage::monitor()
             if(isValidDbl)
             {
 
-                updateField(curQuestionIndex, id, answer);
+                std::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                workerThread.join();
 
             }
             else
@@ -180,7 +185,8 @@ void UpdateStockPage::monitor()
             if(isValidDate)
             {
 
-                updateField(curQuestionIndex, id, answer);
+                std::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                workerThread.join();
 
             }
             else
@@ -377,6 +383,8 @@ void UpdateStockPage::updateField(unsigned int& index, const std::string strId, 
     const unsigned int intDataType = p.get()->get<1>();
     SQLConnection& conn = *DBConfig::getInstance().connObj.get();
     std::string q;
+    std::mutex myMutex;
+    myMutex.lock();
 
     // These are represented as strings in the database so we need to
     // escape using backslash.
@@ -399,7 +407,6 @@ void UpdateStockPage::updateField(unsigned int& index, const std::string strId, 
         if(intDataType == _FLAG_DBL_ONLY)
         {
 
-         
             // Sync the item in the MedicineManager class such that it is consistent with
             // the new change in the database; eliminates need to parse all relations
             // from database again.
@@ -427,5 +434,6 @@ void UpdateStockPage::updateField(unsigned int& index, const std::string strId, 
     conn.disconnect();
     p.reset();
     index++;
+    myMutex.unlock();
 
 }
