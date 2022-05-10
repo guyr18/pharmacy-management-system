@@ -40,6 +40,14 @@ void MedicineManager::add(const Medicine& m)
     }
 }
 
+// Clear() clears @see _data.
+void MedicineManager::clear()
+{
+
+    _data.clear();
+
+}
+
 // Contains(id) returns true if a Medicine object with id, 'id'
 // exists in _data. And otherwise, false.
 bool MedicineManager::contains(const unsigned int id)

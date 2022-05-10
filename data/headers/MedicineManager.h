@@ -32,6 +32,9 @@ class MedicineManager
         // Add(m) adds a Medicine object, m to _data.
         void add(const Medicine& m);
 
+        // Clear() clears @see _data.
+        void clear();
+
         // Contains(id) returns true if a Medicine object with id, 'id'
         // exists in _data. And otherwise, false.
         bool contains(const unsigned int id);

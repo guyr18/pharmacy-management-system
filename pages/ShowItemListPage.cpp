@@ -4,11 +4,14 @@
 #include "../data/Medicine.cpp"
 #include "../data/MedicineManager.cpp"
 #include "../globals/Utils.cpp"
+#include "../db/SQLConnection.cpp"
 #include <boost/container/vector.hpp>
 #include <string>
 #include <iostream>
 #include <stdio.h>
 #include <limits>
+#include <thread>
+#include <mutex>
 
 // Default constructor.
 ShowItemListPage::ShowItemListPage() {}
@@ -17,11 +20,36 @@ ShowItemListPage::ShowItemListPage() {}
 ShowItemListPage::~ShowItemListPage() {}
 
 
+void handleLoadData()
+{
+
+    std::mutex myMutex;
+    myMutex.lock();
+    SQLConnection& conn = *DBConfig::getInstance().connObj.get();
+    conn.connect();
+    pqxx::result r = conn.fetch("SELECT * FROM medicines");
+    MedicineManager::getInstance().clear();
+
+    for(const pqxx::row& row : r)
+    {
+
+        Medicine m{row[0].as<unsigned int>(), row[1].as<std::string>(), row[2].as<std::string>(), row[3].as<std::string>(), row[4].as<std::string>(), row[5].as<double>(), row[6].as<int>()};
+        MedicineManager::getInstance().add(m);
+
+    }
+
+    conn.disconnect();
+    myMutex.unlock();
+    
+}
+
 // Monitor() monitors() user input.
 void ShowItemListPage::monitor()
 {
 
     std::string input;
+    std::thread workerThread(handleLoadData);
+    workerThread.join();
 
     while(true)
     {
