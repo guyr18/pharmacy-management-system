@@ -204,6 +204,29 @@ void MedicineManager::syncItemProperty(const unsigned int id, const std::string 
     }
 }
 
+// BubbleSortById() sorts @see _data in ascending order using a bubble sort
+// algorithm.
+void MedicineManager::bubbleSortById()
+{
+
+    const size_t n = _data.size();
+
+    for(int i = 0; i < n - 1; i++)
+    {
+
+        for(int j = 0; j < n - i - 1; j++)
+        {
+
+            if(_data[j]._id >= _data[j + 1]._id)
+            {
+
+                std::swap(_data[j], _data[j + 1]);
+
+            }
+        }
+    }
+}
+
 // GetData() returns the cached list of Medicine object(s), @see _data.
 boost::container::vector<Medicine>& MedicineManager::getData()
 {

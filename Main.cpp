@@ -43,6 +43,13 @@ int main(int argc, char* argv[])
     std::thread workerThread{run}; // Declare initial load thread.
     workerThread.join(); // Block until it completes the callable.
 
+    if(MedicineManager::getInstance().getData().size() > 2)
+    {
+
+        MedicineManager::getInstance().bubbleSortById();
+
+    }
+
      // Log main menu.
     Pages::getInstance().MAIN.log();
 

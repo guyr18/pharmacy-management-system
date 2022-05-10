@@ -43,6 +43,14 @@ void handleAdd(Medicine& newMedicineObject)
     conn.insert(q3);
     conn.disconnect();
     MedicineManager::getInstance().add(newMedicineObject);
+
+    if((n + 1) > 2)
+    {
+
+        MedicineManager::getInstance().bubbleSortById();
+
+    }
+    
     myMutex.unlock();
 
 }
