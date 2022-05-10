@@ -9,8 +9,8 @@
 #include <iostream>
 #include <boost/container/vector.hpp>
 #include <boost/tuple/tuple.hpp>
-#include <thread>
-#include <mutex>
+#include <boost/thread/thread.hpp>
+#include <boost/thread/mutex.hpp>
 
 // Default constructor.
 BuyMedicinePage::BuyMedicinePage() {}
@@ -21,7 +21,7 @@ BuyMedicinePage::~BuyMedicinePage() { }
 void handleBuy(boost::container::vector<boost::tuple<int, int>>& newQty)
 {
 
-    std::mutex myMutex;
+    boost::mutex myMutex;
     myMutex.lock();
     SQLConnection& conn = *DBConfig::getInstance().connObj.get();
     conn.connect();
@@ -129,7 +129,7 @@ void BuyMedicinePage::monitor()
 
     std::cout << "]" << std::endl;
     std::cout << std::fixed << std::setprecision(2) << "Total Purchase Price: " << totalPurchasePrice << std::endl;
-    std::thread workerThread(handleBuy, std::ref(newQty));
+    boost::thread workerThread(handleBuy, std::ref(newQty));
     workerThread.join();
 
     }

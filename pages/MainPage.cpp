@@ -8,8 +8,8 @@
 #include "headers/MainPage.h"
 #include <string>
 #include <iostream>
-#include <thread>
-#include <mutex>
+#include <boost/thread/thread.hpp>
+#include <boost/thread/mutex.hpp>
 
 // Default constructor.
 MainPage::MainPage() { }
@@ -20,7 +20,7 @@ MainPage::~MainPage() { }
 void handleDataLoad()
 {
 
-    std::mutex myMutex;
+    boost::mutex myMutex;
     myMutex.lock();
     SQLConnection& conn = *DBConfig::getInstance().connObj.get();
     conn.connect();
@@ -62,7 +62,7 @@ void MainPage::monitor()
         if(input == "1") // Buy Medicine.
         {
             
-            std::thread workerThread(handleDataLoad);
+            boost::thread workerThread(handleDataLoad);
             workerThread.join();
             system("clear");
             Pages::getInstance().BMP.log();
@@ -82,7 +82,7 @@ void MainPage::monitor()
         {
 
 
-            std::thread workerThread(handleDataLoad);
+            boost::thread workerThread(handleDataLoad);
             workerThread.join();
             system("clear");
             Pages::getInstance().FIP.log();
@@ -93,7 +93,7 @@ void MainPage::monitor()
         {
 
 
-            std::thread workerThread(handleDataLoad);
+            boost::thread workerThread(handleDataLoad);
             workerThread.join();
             system("clear");
             Pages::getInstance().ASP.log();
@@ -104,7 +104,7 @@ void MainPage::monitor()
         else if(input == "5") // Update product attribute.
         {
 
-            std::thread workerThread(handleDataLoad);
+            boost::thread workerThread(handleDataLoad);
             workerThread.join();
             system("clear");
             Pages::getInstance().USP.log();
@@ -115,7 +115,7 @@ void MainPage::monitor()
         else if(input == "6") // Delete product from database.
         {
 
-            std::thread workerThread(handleDataLoad);
+            boost::thread workerThread(handleDataLoad);
             workerThread.join();
             system("clear");
             Pages::getInstance().DSP.log();

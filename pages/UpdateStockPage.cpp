@@ -9,8 +9,8 @@
 #include <boost/shared_ptr.hpp>
 #include <string>
 #include <iostream>
-#include <thread>
-#include <mutex>
+#include <boost/thread/thread.hpp>
+#include <boost/thread/mutex.hpp>
 
 // Default constructor.
 UpdateStockPage::UpdateStockPage()
@@ -127,7 +127,7 @@ void UpdateStockPage::monitor()
             else
             {
 
-                std::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                boost::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
                 workerThread.join();
 
             }
@@ -143,7 +143,7 @@ void UpdateStockPage::monitor()
             if(isValidInt)
             {
 
-                std::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                boost::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
                 workerThread.join();
 
             }
@@ -164,7 +164,7 @@ void UpdateStockPage::monitor()
             if(isValidDbl)
             {
 
-                std::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                boost::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
                 workerThread.join();
 
             }
@@ -185,7 +185,7 @@ void UpdateStockPage::monitor()
             if(isValidDate)
             {
 
-                std::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                boost::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
                 workerThread.join();
 
             }
@@ -383,7 +383,7 @@ void UpdateStockPage::updateField(unsigned int& index, const std::string strId, 
     const unsigned int intDataType = p.get()->get<1>();
     SQLConnection& conn = *DBConfig::getInstance().connObj.get();
     std::string q;
-    std::mutex myMutex;
+    boost::mutex myMutex;
     myMutex.lock();
 
     // These are represented as strings in the database so we need to

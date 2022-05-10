@@ -6,8 +6,8 @@
 #include "headers/DeleteStockPage.h"
 #include <string>
 #include <iostream>
-#include <thread>
-#include <mutex>
+#include <boost/thread/thread.hpp>
+#include <boost/thread/mutex.hpp>
 
 // Default constructor.
 DeleteStockPage::DeleteStockPage() { }
@@ -76,7 +76,7 @@ void DeleteStockPage::monitor()
         {
 
             performDelete = true;
-            std::thread workerThread(&DeleteStockPage::handleDeleteRelation, this, std::ref(intId));
+            boost::thread workerThread(&DeleteStockPage::handleDeleteRelation, this, std::ref(intId));
             workerThread.join();
             break;
 
@@ -209,7 +209,7 @@ void DeleteStockPage::log()
 void DeleteStockPage::handleDeleteRelation(const unsigned int& id)
 {
 
-    std::mutex myMutex;
+    boost::mutex myMutex;
     myMutex.lock();
     SQLConnection& conn = *DBConfig::getInstance().connObj.get();
     conn.connect();

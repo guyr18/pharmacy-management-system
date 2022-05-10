@@ -6,8 +6,8 @@
 #include <boost/date_time.hpp>
 #include <string>
 #include <iostream>
-#include <thread>
-#include <mutex>
+#include <boost/thread/thread.hpp>
+#include <boost/thread/mutex.hpp>
 
 // Default constructor.
 AddStockPage::AddStockPage()
@@ -28,7 +28,7 @@ AddStockPage::~AddStockPage() { }
 void handleAdd(Medicine& newMedicineObject)
 {
 
-    std::mutex myMutex;
+    boost::mutex myMutex;
     myMutex.lock();
     const size_t n = MedicineManager::getInstance().getData().size();
     newMedicineObject._id = n == 0 ? 1 : MedicineManager::getInstance().getData().at(n - 1)._id + 1;
@@ -222,7 +222,7 @@ void AddStockPage::monitor()
         }
     }
 
-    std::thread workerThread(handleAdd, std::ref(newMedicineObject));
+    boost::thread workerThread(handleAdd, std::ref(newMedicineObject));
     workerThread.join();
     system("clear");
     Pages::getInstance().MAIN.log();

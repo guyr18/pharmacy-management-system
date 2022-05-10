@@ -10,8 +10,8 @@
 #include <iostream>
 #include <stdio.h>
 #include <limits>
-#include <thread>
-#include <mutex>
+#include <boost/thread/thread.hpp>
+#include <boost/thread/mutex.hpp>
 
 // Default constructor.
 ShowItemListPage::ShowItemListPage() {}
@@ -23,7 +23,7 @@ ShowItemListPage::~ShowItemListPage() {}
 void handleLoadData()
 {
 
-    std::mutex myMutex;
+    boost::mutex myMutex;
     myMutex.lock();
     SQLConnection& conn = *DBConfig::getInstance().connObj.get();
     conn.connect();
@@ -48,7 +48,7 @@ void ShowItemListPage::monitor()
 {
 
     std::string input;
-    std::thread workerThread(handleLoadData);
+    boost::thread workerThread(handleLoadData);
     workerThread.join();
 
     while(true)

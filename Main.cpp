@@ -3,13 +3,13 @@
 #include "pages/MainPage.cpp"
 #include "pages/ShowItemListPage.cpp"
 #include "globals/DBConfig.cpp"
-#include <thread>
-#include <mutex>
+#include <boost/thread/thread.hpp>
+#include <boost/thread/mutex.hpp>
 
 void run()
 {
 
-    std::mutex myMutex; // Declare mutex.
+    boost::mutex myMutex; // Declare mutex.
     myMutex.lock(); // Block until mutex is available.
 
     // Establish connection and cache table rows from state S where state S
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 {
 
    
-    std::thread workerThread{run}; // Declare initial load thread.
+    boost::thread workerThread{run}; // Declare initial load thread.
     workerThread.join(); // Block until it completes the callable.
 
     if(MedicineManager::getInstance().getData().size() > 2)
