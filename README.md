@@ -1,5 +1,10 @@
 # Pharmacy Management System
 
+
+
+https://user-images.githubusercontent.com/46636441/169282481-1b0d8f2a-f800-4eba-b178-d283ba31a5aa.mp4
+
+
 # Purpose
 Pharmacy Management System is a command-line application that is being developed to
 handle the inventory management of medicinal products at local pharmacist location.
