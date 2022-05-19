@@ -8,46 +8,12 @@
 #include "headers/MainPage.h"
 #include <string>
 #include <iostream>
-#include <boost/thread/thread.hpp>
-#include <boost/thread/mutex.hpp>
 
 // Default constructor.
 MainPage::MainPage() { }
 
 // Default destructor.
 MainPage::~MainPage() { }
-
-void handleDataLoad()
-{
-
-    boost::mutex myMutex;
-    myMutex.lock();
-    SQLConnection& conn = *DBConfig::getInstance().connObj.get();
-    conn.connect();
-    pqxx::result r = conn.fetch("SELECT * FROM medicines");
-    MedicineManager::getInstance().clear();
-
-    for(const pqxx::row& row : r)
-    {
-
-        Medicine m{row[0].as<unsigned int>(), row[1].as<std::string>(), row[2].as<std::string>(), row[3].as<std::string>(), row[4].as<std::string>(), row[5].as<double>(), row[6].as<int>()};
-        MedicineManager::getInstance().add(m);
-
-    }
-
-    size_t n = MedicineManager::getInstance().getData().size();
-
-    if(n > 2)
-    {
-
-        MedicineManager::getInstance().bubbleSortById();
-
-    }
-
-    conn.disconnect();
-    myMutex.unlock();
-
-}
 
 // Monitor() monitors() user input.
 void MainPage::monitor()
@@ -62,10 +28,7 @@ void MainPage::monitor()
         if(input == "1") // Buy Medicine.
         {
             
-            boost::thread workerThread(handleDataLoad);
-            workerThread.join();
             system("clear");
-            Pages::getInstance().BMP.log();
             Pages::getInstance().BMP.monitor();
 
         }
@@ -73,17 +36,12 @@ void MainPage::monitor()
         {
 
             system("clear");
-            Pages::getInstance().SILP.log();
             Pages::getInstance().SILP.monitor();
-
 
         }
         else if(input == "3") // Item database lookup.
         {
 
-
-            boost::thread workerThread(handleDataLoad);
-            workerThread.join();
             system("clear");
             Pages::getInstance().FIP.log();
             Pages::getInstance().FIP.monitor();
@@ -92,9 +50,6 @@ void MainPage::monitor()
         else if(input == "4") // Add product to database.
         {
 
-
-            boost::thread workerThread(handleDataLoad);
-            workerThread.join();
             system("clear");
             Pages::getInstance().ASP.log();
             Pages::getInstance().ASP.monitor();
@@ -103,11 +58,8 @@ void MainPage::monitor()
         }
         else if(input == "5") // Update product attribute.
         {
-
-            boost::thread workerThread(handleDataLoad);
-            workerThread.join();
+            
             system("clear");
-            Pages::getInstance().USP.log();
             Pages::getInstance().USP.monitor();
             
 
@@ -115,10 +67,7 @@ void MainPage::monitor()
         else if(input == "6") // Delete product from database.
         {
 
-            boost::thread workerThread(handleDataLoad);
-            workerThread.join();
             system("clear");
-            Pages::getInstance().DSP.log();
             Pages::getInstance().DSP.monitor();
            
         }

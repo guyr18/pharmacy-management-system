@@ -6,6 +6,9 @@
 #include "../db/SQLConnection.cpp"
 #include "Utils.cpp"
 #include <fstream>
+#include <boost/interprocess/managed_shared_memory.hpp>
+
+using namespace boost::interprocess;
 
 class DBConfig
 {
@@ -23,6 +26,8 @@ class DBConfig
 
 
     public:
+
+        boost::shared_ptr<managed_shared_memory> sharedMemoryObject;
 
         // Configuration variables.
         std::string HOST_NAME, DB_NAME, USER_NAME, PWD, PORT_NO;

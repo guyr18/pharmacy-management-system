@@ -11,6 +11,17 @@
 #include <iostream>
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
+#include <boost/interprocess/managed_shared_memory.hpp>
+#include <boost/interprocess/containers/vector.hpp>
+#include <boost/interprocess/containers/string.hpp>
+#include <boost/interprocess/allocators/allocator.hpp>
+
+typedef allocator<char, managed_shared_memory::segment_manager> CharAllocator;
+typedef basic_string<char, std::char_traits<char>, CharAllocator> MyString;
+typedef allocator<MyString, managed_shared_memory::segment_manager> StringAllocator;
+typedef boost::interprocess::vector<MyString, StringAllocator> Vect;
+
+using namespace boost::interprocess;
 
 // Default constructor.
 UpdateStockPage::UpdateStockPage()
@@ -28,6 +39,191 @@ UpdateStockPage::UpdateStockPage()
 // Default destructor.
 UpdateStockPage::~UpdateStockPage() {}
 
+// CheckSharedMemory() is run by a separate thread of execution.
+// It checks the shared memory region for any data changes before
+// executing the remainder of the .monitor() method.
+void UpdateStockPage::checkSharedMemory()
+{
+
+    boost::mutex myMutex;
+    myMutex.lock();
+
+    try {
+
+        // Reference shared memory.
+        managed_shared_memory* shm = DBConfig::getInstance().sharedMemoryObject.get();
+
+        // Obtain the thread-safe vector that is stored in shared memory.
+        Vect* m = shm->find<Vect>("propertyVector").first;
+
+        // Are their new properties in this vector?
+        if(m != nullptr && m->size() >= 7 && m->size() % 7 == 0)
+        {
+
+            int count = 0;
+            unsigned int id = 0;
+            std::string name = "";
+            std::string ownedBy = "";
+            std::string arrivalDate = "";
+            std::string expirationDate = "";
+            double price = 0.0;
+            int qty = 0;
+
+            // If the vector exists and there are multiple Medicine objects, update in-memory
+            // data structure; i.e.: MedicineManager.
+            for(auto itr = m->begin(); itr != m->end(); itr++, count++)
+            {
+
+                // This is the 7th item. Medicine objects store 7 variables, therefore we have enough
+                // information now to potentially add this to our in-memory data structure.
+                if((count + 1) >= 7 && (count + 1) % 7 == 0)
+                {
+
+
+                     Medicine& target = MedicineManager::getInstance().getById(id);
+                     qty = std::stoi(std::string(itr->begin(), itr->end()));
+
+                    // If we repeatedly go through this process, it is possible that the item
+                    // is already consumed and is in the in-memory data structure for this process.
+                    // We don't want duplicates, so we want to verify that this Medicine object
+                    // is unique before adding it.
+                    if(target._id == 0)
+                    {
+
+                        // Build Medicine object from properties and add to MedicineManager vector.
+                        const Medicine objMedicine{id, name, ownedBy, arrivalDate, expirationDate, price, qty};
+                        MedicineManager::getInstance().add(objMedicine);
+
+                        // Reset local variable properties.
+                        id = 0;
+                        name = "";
+                        ownedBy = "";
+                        arrivalDate = "";
+                        expirationDate = "";
+                        price = 0.0;
+                        qty = 0;
+
+                    // It is possible that it is not neccessarily unique, but some properties may have been updated. We will need to reflect
+                    // this in the MedicineManager class.
+                    }
+                    else
+                    {
+
+                        if(target._name != name)
+                        {
+
+                            target._name = name;
+
+                        }
+
+                        if(target._ownedBy != ownedBy)
+                        {
+
+                            target._ownedBy = ownedBy;
+
+                        }
+
+                        if(target._arrivalDate != arrivalDate)
+
+                        {
+
+                            target._arrivalDate = arrivalDate;
+
+                        }
+
+                        if(target._expirationDate != expirationDate)
+                        {
+
+                            target._expirationDate = expirationDate;
+
+                        }
+
+                        if(target._price != price)
+                        {
+
+                            target._price = price;
+
+                        }
+
+                        if(target._qty != qty)
+                        {
+
+                            target._qty = qty;
+                            
+                        }
+                    }
+
+                    count = -1; // Set count to -1, because we know it will be incremented to zero at the end of this iteration.
+                    itr++;
+                    continue;
+
+                }
+
+                 // We need to figure out which property this is. We can logically deduce this from the value of count.
+                if(count == 0)
+                {
+
+                    id = std::stoi(std::string(itr->begin(), itr->end()));
+
+                }
+                else if(count == 1)
+                {
+
+                    name = std::string(itr->begin(), itr->end());
+
+                }
+                else if(count == 2)
+                {
+
+                    ownedBy = std::string(itr->begin(), itr->end());
+
+                }
+                else if(count == 3)
+                {
+
+                    arrivalDate = std::string(itr->begin(), itr->end());
+
+                }
+                else if(count == 4)
+                {
+
+                    expirationDate = std::string(itr->begin(), itr->end());
+
+                }
+                else if(count == 5)
+                {
+
+                    price = std::stod(std::string(itr->begin(), itr->end()));
+
+                }
+            }
+        }
+
+    // Check if any IDs are present in MedicineManager and deleteVector. If so, we
+    // should remove them.
+    Vect* deleteVector = shm->find<Vect>("deleteVector").first;
+
+    for(auto dItr = deleteVector->begin(); dItr != deleteVector->end(); ++dItr)
+    {
+
+        const unsigned int intId = std::stoi(std::string(dItr->begin(), dItr->end()));
+        Medicine& targetMed = MedicineManager::getInstance().getById(intId);
+        
+        if(targetMed._id != 0)
+        {
+
+            MedicineManager::getInstance().removeById(targetMed._id);
+
+        }
+    }
+
+    }
+    catch(const std::exception& e) 
+    {}
+
+    myMutex.unlock();
+
+}
 
 // Monitor() monitors() user input.
 void UpdateStockPage::monitor()
@@ -38,6 +234,12 @@ void UpdateStockPage::monitor()
     int convId;
     unsigned int maxId = n == 0 ? 1 : MedicineManager::getInstance().getData().at(n - 1)._id;
     bool emptyCache = n == 0;
+
+    // Check for shared memory on separate thread one last time
+    // before logging data.
+    boost::thread memoryThread{&UpdateStockPage::checkSharedMemory, this};
+    memoryThread.join(); // Block for thread completion.
+    log(); // Log data.
     std::cin.ignore();
 
     if(!emptyCache)
@@ -127,7 +329,9 @@ void UpdateStockPage::monitor()
             else
             {
 
+                boost::thread memoryThread(&UpdateStockPage::checkSharedMemory, this);
                 boost::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                memoryThread.join();
                 workerThread.join();
 
             }
@@ -143,7 +347,9 @@ void UpdateStockPage::monitor()
             if(isValidInt)
             {
 
+                boost::thread memoryThread(&UpdateStockPage::checkSharedMemory, this);
                 boost::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                memoryThread.join();
                 workerThread.join();
 
             }
@@ -164,7 +370,9 @@ void UpdateStockPage::monitor()
             if(isValidDbl)
             {
 
+                boost::thread memoryThread(&UpdateStockPage::checkSharedMemory, this);
                 boost::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                memoryThread.join();
                 workerThread.join();
 
             }
@@ -184,8 +392,10 @@ void UpdateStockPage::monitor()
 
             if(isValidDate)
             {
-
+                
+                boost::thread memoryThread(&UpdateStockPage::checkSharedMemory, this);
                 boost::thread workerThread(&UpdateStockPage::updateField, this, std::ref(curQuestionIndex), id, answer);
+                memoryThread.join();
                 workerThread.join();
 
             }
@@ -434,6 +644,114 @@ void UpdateStockPage::updateField(unsigned int& index, const std::string strId, 
     conn.disconnect();
     p.reset();
     index++;
+
+    // Reference shared memory.
+    managed_shared_memory* shm = DBConfig::getInstance().sharedMemoryObject.get();
+
+    // Register changes in shared memory segment.
+    Vect* m = shm->find<Vect>("propertyVector").first;
+    const CharAllocator charAllocInst(shm->get_segment_manager());
+    int skipCount = 1;
+    auto startIterator = m->end();
+
+    for(auto itr = m->begin(); itr != m->end(); itr += 7, skipCount++)
+    {
+
+        std::string ref(itr->begin(), itr->end());
+
+        if(ref == strId)
+        {
+
+            auto temp = itr;
+            startIterator = m->begin() + (skipCount * 7);
+            break;
+
+        }
+    }
+
+    // This ID is not in the shared memory segment, so we will add it to the vector.
+    if(startIterator == m->end())
+    {
+
+        Medicine& target = MedicineManager::getInstance().getById(std::stoi(strId));
+        const std::string strId2 = std::to_string(target._id);
+        const std::string strPrice = std::to_string(target._price);
+        const std::string strQty = std::to_string(target._qty);
+        MyString myStringId(strId2.begin(), strId2.end(), charAllocInst);
+        MyString myStringName(target._name.begin(), target._name.end(), charAllocInst);
+        MyString myStringOwnedBy(target._ownedBy.begin(), target._ownedBy.end(), charAllocInst);
+        MyString myStringAD(target._arrivalDate.begin(), target._arrivalDate.end(), charAllocInst);
+        MyString myStringED(target._expirationDate.begin(), target._expirationDate.end(), charAllocInst);
+        MyString myStringPrice(strPrice.begin(), strPrice.end(), charAllocInst);
+        MyString myStringQty(strQty.begin(), strQty.end(), charAllocInst);
+        m->push_back(myStringId);
+        m->push_back(myStringName);
+        m->push_back(myStringOwnedBy);
+        m->push_back(myStringAD);
+        m->push_back(myStringED);
+        m->push_back(myStringPrice);
+        m->push_back(myStringQty);
+
+    }
+    else
+    {
+
+        // The ID is in the shared memory segment. So, we should see if any of the properties differ
+        // from what is currently in MedicineManager. We need everyone to be in sync.
+        Medicine& target = MedicineManager::getInstance().getById(std::stoi(strId));
+        int count = 1;
+        startIterator += 1;
+
+        while(startIterator != m->end())
+        {
+            
+            std::string ref = std::string(startIterator->begin(), startIterator->end());
+
+            if(count == 1 && target._name != ref)
+            {
+
+                *startIterator = MyString(target._name.begin(), target._name.end(), charAllocInst);
+
+            }
+            else if(count == 2 && target._ownedBy != ref)
+            {
+
+                *startIterator = MyString(target._ownedBy.begin(), target._ownedBy.end(), charAllocInst);
+
+            }
+            else if(count == 3 && target._arrivalDate != ref)
+            {
+
+                *startIterator = MyString(target._arrivalDate.begin(), target._arrivalDate.end(), charAllocInst);
+
+            }
+            else if(count == 4 && target._expirationDate != ref)
+            {
+
+                *startIterator = MyString(target._expirationDate.begin(), target._expirationDate.end(), charAllocInst);
+
+            }
+            else if(count == 5 && target._price != std::stoi(ref))
+            {
+
+                std::string temp = std::to_string(target._price);
+                *startIterator = MyString(temp.begin(), temp.end(), charAllocInst);
+
+            }
+            else
+            {
+                
+                std::string temp = std::to_string(target._qty);
+                *startIterator = MyString(temp.begin(), temp.end(), charAllocInst);
+
+            }
+
+            startIterator++;
+            count++;
+
+        }   
+    }
+
     myMutex.unlock();
 
 }

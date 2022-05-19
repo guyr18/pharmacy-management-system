@@ -25,6 +25,11 @@ class UpdateStockPage : public ITerminalPage
         // data loss during function frame destruction.
         boost::shared_ptr<boost::tuple<std::string, unsigned int>> getQueryableTuple(const unsigned int index);
 
+        // CheckSharedMemory() is run by a separate thread of execution.
+        // It checks the shared memory region for any data changes before
+        // executing the remainder of the .monitor() method.
+        void checkSharedMemory(); 
+        
         // UpdateField(index, strId, answer) updates the relation with id, strId, to a value
         // of answer. Index is used to obtain the appropriate field name.
         void updateField(unsigned int& index, const std::string strId, const std::string answer);

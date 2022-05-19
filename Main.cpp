@@ -5,6 +5,16 @@
 #include "globals/DBConfig.cpp"
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
+#include <boost/interprocess/managed_shared_memory.hpp>
+#include <boost/interprocess/containers/vector.hpp>
+#include <boost/interprocess/containers/string.hpp>
+#include <boost/interprocess/allocators/allocator.hpp>
+
+using namespace boost::interprocess;
+typedef allocator<char, managed_shared_memory::segment_manager> CharAllocator;
+typedef basic_string<char, std::char_traits<char>, CharAllocator> MyString;
+typedef allocator<MyString, managed_shared_memory::segment_manager> StringAllocator;
+typedef boost::interprocess::vector<MyString, StringAllocator> Vect;
 
 void run()
 {
@@ -36,11 +46,54 @@ void run()
 
 }
 
+void createSharedMemoryRegion()
+{
+
+    // Initialize and acquire a mutex.
+    boost::mutex myMutex;
+    myMutex.lock();
+    DBConfig& dbc = DBConfig::getInstance();
+
+    // Attempt to create a shared memory region. If it throws, this
+    // means another process has created the region and we just need
+    // to open it.
+    try
+    {
+        
+        managed_shared_memory* shm = new managed_shared_memory(create_only, "boost", 65656); // Create shared memory region.
+        const StringAllocator allocInstance(shm->get_segment_manager()); // Get allocator reference.
+
+        // In the try block, we would be creating our shared memory region for the first time. So, we initialize our vectors to
+        // an empty one.
+        Vect* medicineVector = shm->construct<Vect>("propertyVector")(allocInstance);
+        Vect* deleteVector = shm->construct<Vect>("deleteVector")(allocInstance);
+
+        // Set managed_shared_memory reference in DBConfig.
+        dbc.sharedMemoryObject.reset(shm);
+
+    } 
+    catch(const std::exception& e)
+    {
+
+        // If we reach this block, another process has already created the shared memory
+        // region. There is no data to read at this point. So, just proceed and release
+        // the mutex lock.
+        managed_shared_memory* shm = new managed_shared_memory(open_only, "boost");
+        dbc.sharedMemoryObject.reset(shm);
+
+    }
+
+    myMutex.unlock(); // Release mutex.
+
+}
+
 int main(int argc, char* argv[])
 {
 
    
-    boost::thread workerThread{run}; // Declare initial load thread.
+    boost::thread sharedMemoryThread{createSharedMemoryRegion};
+    boost::thread workerThread{run}; // Declare load thread.
+    sharedMemoryThread.join();
     workerThread.join(); // Block until it completes the callable.
 
     if(MedicineManager::getInstance().getData().size() > 2)
@@ -56,8 +109,9 @@ int main(int argc, char* argv[])
     // Await input.
     Pages::getInstance().MAIN.monitor();
 
-    // Free memory allocated to SQLConnection object.
+    // Free memory allocated in DBConfig class.
     DBConfig::getInstance().connObj.reset();
+    DBConfig::getInstance().sharedMemoryObject.reset();
     return 0;
 
 }
