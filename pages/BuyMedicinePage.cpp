@@ -72,9 +72,7 @@ void BuyMedicinePage::checkSharedMemory()
                 {
                     
                     Medicine& target = MedicineManager::getInstance().getById(id);
-                    std::cout << "qty = " << *itr << std::endl;
                     qty = std::stoi(std::string(itr->begin(), itr->end()));
-                    std::cout << "after qty cast " << std::endl;
 
                     // If we repeatedly go through this process, it is possible that the item
                     // is already consumed and is in the in-memory data structure for this process.

@@ -379,7 +379,8 @@ void FindItemPage::idSearchHandler()
 
     int convId = -1;
     const size_t numItems = MedicineManager::getInstance().getData().size();
-    std::cout << std::endl << "There are currently " << numItems << " items in the database. Please enter an identifier between 1 and " << numItems << ": ";
+    unsigned int maxId = MedicineManager::getInstance().getData().at(numItems - 1)._id;
+    std::cout << std::endl << "There are currently " << numItems << " items in the database. Please enter an identifier between 1 and " << maxId << ": ";
 
     while(true)
     {
@@ -391,6 +392,15 @@ void FindItemPage::idSearchHandler()
         {
 
             convId = std::stoi(idEntered);
+
+            if(convId < 1 || convId > maxId)
+            {
+
+                std::cout << "Invalid ID entered." << std::endl;
+                continue;
+
+            }
+
             break;
 
         }
@@ -465,8 +475,9 @@ void FindItemPage::nameSearchHandler()
             }
 
             int convItemNo = -1;
-            const int numPrefixes = prefixes.size();
-            std::cout << std::endl << "Specify an item no. to view in more detail; between 1 and " << numPrefixes << "." << std::endl;
+            const size_t numPrefixes = MedicineManager::getInstance().getData().size();
+            unsigned int maxId = MedicineManager::getInstance().getData().at(numPrefixes - 1)._id;
+            std::cout << std::endl << "Specify an item no. to view in more detail; between 1 and " << maxId << "." << std::endl;
         
             while(true)
             {
@@ -480,7 +491,7 @@ void FindItemPage::nameSearchHandler()
                 
                     convItemNo = std::stoi(itemno);
 
-                    if(convItemNo >= 1 && convItemNo <= numPrefixes)
+                    if(convItemNo >= 1 && convItemNo <= maxId)
                     {
 
                         const Medicine& m2 = MedicineManager::getInstance().getById(prefixes.at(convItemNo - 1)._id);
