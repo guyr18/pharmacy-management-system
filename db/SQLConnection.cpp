@@ -31,13 +31,17 @@ SQLConnection::SQLConnection(const SQLConnection& rhs)
 SQLConnection& SQLConnection::operator=(const SQLConnection& rhs)
 {
 
-    _hostname = rhs.getHostName();
-    _dbname = rhs.getDbName();
-    _username = rhs.getUserName();
-    _password = rhs.getPassword();
-    _port = rhs.getPortNo();
-    return *this;
-
+    if(&rhs != this)
+    {
+        
+        _hostname = rhs.getHostName();
+        _dbname = rhs.getDbName();
+        _username = rhs.getUserName();
+        _password = rhs.getPassword();
+        _port = rhs.getPortNo();
+        return *this;
+        
+    }
 }
 
 // Default destructor.
