@@ -92,6 +92,7 @@ void SQLConnection::connect()
 void SQLConnection::disconnect()
 {
 
+    _active = false;
     _conn.get()->disconnect();
 
 }
@@ -100,6 +101,8 @@ void SQLConnection::disconnect()
 pqxx::result SQLConnection::fetch(const std::string q)
 {
 
+    if(!_active) { return; }
+    
     try
     {
 
@@ -125,6 +128,8 @@ pqxx::result SQLConnection::fetch(const std::string q)
 void SQLConnection::insert(const std::string q)
 {
 
+    if(!_active) { return; }
+    
     try
     {
         
