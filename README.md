@@ -73,7 +73,7 @@ chmod +x Main
   **EDIT**: This was implemented, however the efficiency of the implementation could be improved. This will be described in the demo video
             embedded above. However, run-time has significantly been improved. All data relations are no longer loaded except at start-time.
             Two vectors are used to facilitate data synchronization within a shared memory segment or region. This is based on the allocated
-            amount of memory and currently does not expand. If two many operations are encountered, the memory capacity will be passed
+            amount of memory and currently does not expand. If too many operations are encountered, the memory capacity will be exceeded
             and an std::bad_alloc exception will be thrown. I am currently looking for ways around this. A potential thought is to load
             all data relations or a partition of the data relations from PostgreSQL if the exception is raised. This exception could be caught
             this way.
