@@ -148,10 +148,9 @@ void SQLConnection::insert(const std::string q)
     }
 }
 
-
 // IsActive() returns true if a valid connection is open (@see _conn) and
 // false otherwise.
-bool SQLConnection::isActive() const
+const bool SQLConnection::isActive() const
 {
 
     return _active;
@@ -160,7 +159,7 @@ bool SQLConnection::isActive() const
 
 // GetHostName() returns the hostname that is associated with
 // this SQLConnection instance.
-std::string SQLConnection::getHostName() const 
+const std::string SQLConnection::getHostName() const 
 {
 
     return _hostname;
@@ -169,7 +168,7 @@ std::string SQLConnection::getHostName() const
 
 // GetPortNo() returns the port no. that is associated with
 // this SQLConnection instance.
-unsigned int SQLConnection::getPortNo() const
+const unsigned int SQLConnection::getPortNo() const
 {
 
     return _port;
@@ -178,7 +177,7 @@ unsigned int SQLConnection::getPortNo() const
 
 // GetDbName() returns the name of the database that is associated
 // with this SQLConnection instance.
-std::string SQLConnection::getDbName() const
+const std::string SQLConnection::getDbName() const
 {
 
     return _dbname;
@@ -187,7 +186,7 @@ std::string SQLConnection::getDbName() const
 
 // GetPassword() returns the password that is associated with the
 // configuration of this SQLConnection instance.
-std::string SQLConnection::getPassword() const
+const std::string SQLConnection::getPassword() const
 {
 
     return _password;
@@ -196,7 +195,7 @@ std::string SQLConnection::getPassword() const
 
 // GetUserName() returns the username that is associated with the
 // configuration of this SQLConnection instance.
-std::string SQLConnection::getUserName() const
+const std::string SQLConnection::getUserName() const
 {
 
     return _username;

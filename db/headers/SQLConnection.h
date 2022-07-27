@@ -57,27 +57,27 @@ class SQLConnection
     
         // IsActive() returns true if a valid connection is open (@see _conn) and
         // false otherwise.
-        bool isActive() const;
+        const bool isActive() const;
 
         // GetHostName() returns the hostname that is associated with
         // this SQLConnection instance.
-        std::string getHostName() const;
+        const std::string getHostName() const;
 
         // GetPortNo() returns the port no. that is associated with
         // this SQLConnection instance.
-        unsigned int getPortNo() const;
+        const unsigned int getPortNo() const;
 
         // GetDbName() returns the name of the database that is associated
         // with this SQLConnection instance.
-        std::string getDbName() const;
+        const std::string getDbName() const;
 
         // GetPassword() returns the password that is associated with the
         // configuration of this SQLConnection instance.
-        std::string getPassword() const;
+        const std::string getPassword() const;
 
         // GetUserName() returns the username that is associated with the
         // configuration of this SQLConnection instance.
-        std::string getUserName() const;
+        const std::string getUserName() const;
         
 };
 
