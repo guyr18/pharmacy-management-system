@@ -84,3 +84,8 @@ chmod +x Main
   I would like to pivot to an O(NLogN) algorithm such as Merge Sort or Quick Sort for optimal performance with sufficiently large values of N.
   where N is the total number of medicine relations.
 
+**Edit**: Pivoted from Bubble Sort to Heap sort leveraging a priority_queue with a custom comparator (via a function object). This improves  
+          the time complexity from a worst case of O(N^2) to O(NLogN). Conversely, the space complexity has a slight increase from an iterative  
+          Bubble sort algorithm as it jumps from constant time to linear time.  
+
+
