@@ -39,9 +39,11 @@ SQLConnection& SQLConnection::operator=(const SQLConnection& rhs)
         _username = rhs.getUserName();
         _password = rhs.getPassword();
         _port = rhs.getPortNo();
-        return *this;
         
     }
+
+    return *this;
+
 }
 
 // Default destructor.
@@ -101,7 +103,7 @@ void SQLConnection::disconnect()
 pqxx::result SQLConnection::fetch(const std::string q)
 {
 
-    if(!_active) { return; }
+    if(!_active) { return DUMMY_RESULT; }
     
     try
     {
