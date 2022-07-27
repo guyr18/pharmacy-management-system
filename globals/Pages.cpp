@@ -33,11 +33,5 @@ class Pages
         }
 
         MainPage MAIN; // MainPage copy.
-        ShowItemListPage SILP; // ShowItemListPage copy.
-        BuyMedicinePage BMP; // BuyMedicinePage copy.
-        AddStockPage ASP; // AddStockPage copy.
-        FindItemPage FIP; // FindItemPage copy.
-        UpdateStockPage USP; // UpdateStockPage copy.
-        DeleteStockPage DSP; // DeleteStockPage copy.
-
+        
 };
