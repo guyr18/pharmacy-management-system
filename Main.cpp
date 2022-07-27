@@ -95,12 +95,29 @@ int main(int argc, char* argv[])
     boost::thread workerThread{run}; // Declare load thread.
     sharedMemoryThread.join();
     workerThread.join(); // Block until it completes the callable.
+    const size_t numRelations = MedicineManager::getInstance().getData().size();
 
-    if(MedicineManager::getInstance().getData().size() > 2)
+    // If their are more than two relations in our vector, sort the ids
+    // of these items.
+    if(numRelations > 2)
     {
 
         MedicineManager::getInstance().bubbleSortById();
 
+    // If their are only two relations, sometimes they may be unordered due to deserialization order from libpqxx.
+    // If this is the case, we can swap them.
+    }
+    else if(numRelations == 2)
+    {
+
+        auto items = MedicineManager::getInstance().getData();
+
+        if(items[0]._id > items[1]._id)
+        {
+
+            std::swap(items[0], items[1]);
+
+        }
     }
 
      // Log main menu.
