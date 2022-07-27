@@ -6,6 +6,7 @@
 #include "UpdateStockPage.cpp"
 #include "DeleteStockPage.cpp"
 #include "headers/MainPage.h"
+#include<boost/scoped_ptr.hpp>
 #include <string>
 #include <iostream>
 
@@ -19,6 +20,8 @@ MainPage::~MainPage() { }
 void MainPage::monitor()
 {
 
+    boost::scoped_ptr<ITerminalPage> currentPage; // base pointer (boost::scoped_ptr) to be utilized for polymorphic page navigation.
+
     while(true)
     {
 
@@ -29,51 +32,59 @@ void MainPage::monitor()
         {
             
             system("clear");
-            Pages::getInstance().BMP.monitor();
+            currentPage.reset(new BuyMedicinePage);
+            currentPage->monitor();
 
         }
         else if(input == "2") // Show Item List.
         {
 
             system("clear");
-            Pages::getInstance().SILP.monitor();
+            currentPage.reset(new ShowItemListPage);
+            currentPage->monitor();
+            
 
         }
         else if(input == "3") // Item database lookup.
         {
 
             system("clear");
-            Pages::getInstance().FIP.log();
-            Pages::getInstance().FIP.monitor();
+            currentPage.reset(new FindItemPage);
+            currentPage->log();
+            currentPage->monitor();
 
         }
         else if(input == "4") // Add product to database.
         {
 
             system("clear");
-            Pages::getInstance().ASP.log();
-            Pages::getInstance().ASP.monitor();
-
+            currentPage.reset(new AddStockPage);
+            currentPage->log();
+            currentPage->monitor();
 
         }
         else if(input == "5") // Update product attribute.
         {
             
             system("clear");
-            Pages::getInstance().USP.monitor();
-            
+            currentPage.reset(new UpdateStockPage);
+            currentPage->log();
+            currentPage->monitor();            
 
         }
         else if(input == "6") // Delete product from database.
         {
 
             system("clear");
-            Pages::getInstance().DSP.monitor();
+            currentPage.reset(new DeleteStockPage);
+            currentPage->monitor();
+
            
         }
         else if(input == "7") // Exit application.
         {
 
+            currentPage.reset();
             return;
 
         }
