@@ -1,6 +1,7 @@
 #pragma once
 #include "headers/MedicineManager.h"
 #include <cmath>
+#include <queue>
 
 // Default constructor.
 MedicineManager::MedicineManager() {}
@@ -217,26 +218,49 @@ void MedicineManager::syncItemProperty(const unsigned int id, const std::string 
     }
 }
 
-// BubbleSortById() sorts @see _data in ascending order using a bubble sort
-// algorithm.
-void MedicineManager::bubbleSortById()
+class MedicineComparer
+{
+
+    public:
+        bool operator()(std::pair<int, Medicine> p1, std::pair<int, Medicine> p2)
+        {
+
+            return p1.first < p2.first;
+
+        }
+};
+
+// HeapSortById() sorts @see _data in ascending order using a heap sort
+// algorithm; this method executes in the following time:
+// Time Complexity: O(NLogN)
+// Space Complexity O(N)
+void MedicineManager::heapSortById()
 {
 
     const size_t n = _data.size();
+    std::priority_queue<std::pair<int, Medicine>, std::vector<std::pair<int, Medicine>>, MedicineComparer> heap;
 
-    for(int i = 0; i < n - 1; i++)
+    // Store each Medicine object in data as a tuple of the form (i, m)
+    // where is the id of the ith element and m is the ith element itself; (i.e.: Medicine object).
+    // This runs in O(NLogN) times as inserting an item into a heap is at most O(LogN) time which
+    // is executed N times.
+    for(const Medicine& obj : _data)
     {
 
-        for(int j = 0; j < n - i - 1; j++)
-        {
+        std::pair<int, Medicine> elem = std::pair<int, Medicine>(obj._id, obj);
+        heap.push(elem);
 
-            if(_data[j]._id >= _data[j + 1]._id)
-            {
+    }
 
-                std::swap(_data[j], _data[j + 1]);
+    // Pop each pair off the top of the heap and fill them in the vector (@see _data)
+    // one by one, starting  from the end.
+    for(int right = n - 1; right >= 0; right--)
+    {
 
-            }
-        }
+        std::pair<int, Medicine> topElem = heap.top();
+        _data[right] = topElem.second;
+        heap.pop();
+
     }
 }
 

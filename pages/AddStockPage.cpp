@@ -286,7 +286,7 @@ void AddStockPage::handleAdd(Medicine& newMedicineObject)
     if((n + 1) > 2)
     {
 
-        MedicineManager::getInstance().bubbleSortById();
+        MedicineManager::getInstance().heapSortById();
 
     }
     

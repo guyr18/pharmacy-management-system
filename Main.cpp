@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
     if(numRelations > 2)
     {
 
-        MedicineManager::getInstance().bubbleSortById();
+        MedicineManager::getInstance().heapSortById();
 
     // If their are only two relations, sometimes they may be unordered due to deserialization order from libpqxx.
     // If this is the case, we can swap them.

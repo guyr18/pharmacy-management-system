@@ -369,8 +369,20 @@ void DeleteStockPage::monitor()
         if(upd_size > 2)
         {
 
-            MedicineManager::getInstance().bubbleSortById();
+            MedicineManager::getInstance().heapSortById();
 
+        }
+        else if(upd_size == 2)
+        {
+
+            auto items = MedicineManager::getInstance().getData();
+
+            if(items[0]._id > items[1]._id)
+            {
+
+                std::swap(items[0], items[1]);
+
+            }
         }
 
         system("clear");

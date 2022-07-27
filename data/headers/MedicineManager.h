@@ -50,17 +50,25 @@ class MedicineManager
         // And otherwise, false.
         bool isUniqueName(const std::string name);
 
-        // BubbleSortById() sorts @see _data in ascending order using a bubble sort
-        // algorithm.
-        void bubbleSortById();
+        // HeapSortById() sorts @see _data in ascending order using a heap sort
+        // algorithm; this method executes in the following time:
+        // Time Complexity: O(NLogN)
+        // Space Complexity O(N)
+        void heapSortById();
 
         // SyncItemProperty(id, field) locates the Medicine object with a
         // unique identifier of id and sets it member variable field to 
         // val.
         void syncItemProperty(const unsigned int id, const std::string field, const std::string val);
 
+        // SyncItemProperty(id, field, val) locates the Medicine object with a
+        // unique identifier of id and sets it member variable field to 
+        // val. This is a function overload intended to avoid an implicit conversion.
         void syncItemProperty(const unsigned int id, const std::string field, const double val);
 
+        // SyncItemProperty(id, field, val) locates the Medicine object with a
+        // unique identifier of id and sets it member variable field to 
+        // val. This is a function overload intended to avoid an implicit conversion.
         void syncItemProperty(const unsigned int id, const std::string field, const int val);
 
         // GetData() returns the cached list of Medicine object(s), @see _data.
