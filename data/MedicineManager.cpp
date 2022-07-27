@@ -134,7 +134,7 @@ bool MedicineManager::isUniqueName(const std::string name)
 
 // SyncItemProperty(id, field) locates the Medicine object with a
 // unique identifier of id and sets it member variable field to 
-// val.
+// val. This is a function overload intended to avoid an implicit conversion.
 void MedicineManager::syncItemProperty(const unsigned int id, const std::string field, const std::string val)
 {
 
@@ -172,6 +172,9 @@ void MedicineManager::syncItemProperty(const unsigned int id, const std::string 
     }
 }
 
+// SyncItemProperty(id, field, val) locates the Medicine object with a
+// unique identifier of id and sets it member variable field to 
+// val. This is a function overload intended to avoid an implicit conversion.
 void MedicineManager::syncItemProperty(const unsigned int id, const std::string field, const double val)
 {
 
@@ -191,7 +194,9 @@ void MedicineManager::syncItemProperty(const unsigned int id, const std::string 
     }
 }
 
-
+// SyncItemProperty(id, field, val) locates the Medicine object with a
+// unique identifier of id and sets it member variable field to 
+// val. This is a function overload intended to avoid an implicit conversion.
 void MedicineManager::syncItemProperty(const unsigned int id, const std::string field, const int val)
 {
 
