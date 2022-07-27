@@ -16,6 +16,7 @@ typedef basic_string<char, std::char_traits<char>, CharAllocator> MyString;
 typedef allocator<MyString, managed_shared_memory::segment_manager> StringAllocator;
 typedef boost::interprocess::vector<MyString, StringAllocator> Vect;
 
+// Run() loads all database relations through a synchronized procedure involving a boost::mutex.
 void run()
 {
 
@@ -46,6 +47,9 @@ void run()
 
 }
 
+// CreateSharedMemoryRegion() creates a volatile shared memory region if no parent process has created one since
+// OS startup. This procedure is bounded by a mutex, if a child process invokes this method, the mutex is released
+// and the function exits.
 void createSharedMemoryRegion()
 {
 
