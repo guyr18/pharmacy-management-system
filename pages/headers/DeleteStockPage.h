@@ -2,8 +2,9 @@
 #define DELSTK_H
 
 #include "../ITerminalPage.cpp"
+#include "../ISharedMemory.cpp"
 
-class DeleteStockPage : public ITerminalPage
+class DeleteStockPage : public ITerminalPage, public ISharedMemory
 {
 
     private:
@@ -11,11 +12,6 @@ class DeleteStockPage : public ITerminalPage
         // HandleDeleteRelation(id) deletes a relation from the appropriate database table
         // given the primary key id.
         void handleDeleteRelation(const unsigned int& id);
-
-        // CheckSharedMemory() is run by a separate thread of execution.
-        // It checks the shared memory region for any data changes before
-        // executing the remainder of the .monitor() method.
-        void checkSharedMemory(); 
 
     public:
 

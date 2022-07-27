@@ -2,14 +2,12 @@
 #define BUYMED_H
 
 #include "../ITerminalPage.cpp"
+#include "../ISharedMemory.cpp"
 
-class BuyMedicinePage : public ITerminalPage
+class BuyMedicinePage : public ITerminalPage, public ISharedMemory
 {
 
-    // CheckSharedMemory() is run by a separate thread of execution.
-    // It checks the shared memory region for any data changes before
-    // executing the remainder of the .monitor() method.
-    void checkSharedMemory(); 
+    private:
 
     // HandleBuy(newQty) takes a vector of tuples (i, q) where i is the
     // ID of the item being update and q is the new quantity. It is thread-safe.

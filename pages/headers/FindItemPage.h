@@ -2,8 +2,9 @@
 #define FITEM_H
 
 #include "../ITerminalPage.cpp"
+#include "../ISharedMemory.cpp"
 
-class FindItemPage : public ITerminalPage
+class FindItemPage : public ITerminalPage, public ISharedMemory
 {
 
     private:
@@ -13,11 +14,6 @@ class FindItemPage : public ITerminalPage
 
         // NameSearchHandler() handles the algorithm related to name lookup.
         void nameSearchHandler();
-
-        // CheckSharedMemory() is run by a separate thread of execution.
-        // It checks the shared memory region for any data changes before
-        // executing the remainder of the .monitor() method.
-        void checkSharedMemory(); 
         
     public:
 

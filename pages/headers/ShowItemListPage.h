@@ -2,14 +2,10 @@
 #define SHOW_ITEM_LIST_H
 
 #include "../ITerminalPage.cpp"
+#include "../ISharedMemory.cpp"
 
-class ShowItemListPage : public ITerminalPage
+class ShowItemListPage : public ITerminalPage, public ISharedMemory
 {
-
-    // CheckSharedMemory() is run by a separate thread of execution.
-    // It checks the shared memory region for any data changes before
-    // executing the remainder of the .monitor() method.
-    void checkSharedMemory();
 
     public:
 
