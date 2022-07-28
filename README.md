@@ -69,15 +69,15 @@ At the time of this writing, two unit tests are currently available. Unit and in
   * google-tests/unit/
   * google-tests/integration/
 
-This number will increase in the future and assuming a correct installation of Google Test, can be compiled and executed using the following
+This number will increase in the future and assuming a correct installation of **Google Test**, can be compiled and executed using the following
 syntax on the CLI:
 
   ```
   g++ medicine_google_test.cpp -lgtest -lpthread -o test
   ```
 
-  This considers a testing suite involving a Medicine object and compiles it into an executable called **test**. Logically, the executable  
-  may be run as follows:  
+  This considers a testing suite involving a Medicine object and compiles it into an executable called **test**.  
+  Logically, the executable may be run as follows:  
 
   ```
   ./test
