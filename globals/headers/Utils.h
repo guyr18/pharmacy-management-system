@@ -1,7 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "../../db/SQLConnection.cpp"
 #include <boost/tuple/tuple.hpp>
 #include <boost/shared_ptr.hpp>
 class Utils
