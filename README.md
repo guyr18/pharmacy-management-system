@@ -64,6 +64,27 @@ To address this on a Linux or Unix based machine, you may use the chmod command 
 chmod +x Main
 ```
 
+## Unit and Integration Tests (Google Test)
+At the time of this writing, two unit tests are currently available. Unit and integration tests are located in the following directories:  
+  * google-tests/unit/
+  * google-tests/integration/
+
+This number will increase in the future and assuming a correct installation of Google Test, can be compiled and executed using the following
+syntax on the CLI:
+
+  ```
+  g++ medicine_google_test.cpp -lgtest -lpthread -o test
+  ```
+
+  This considers a testing suite involving a Medicine object and compiles it into an executable called **test**. Logically, the executable  
+  may be run as follows:  
+
+  ```
+  ./test
+  ```
+
+  The **-lgtest** and **-lpthread** are mandatory as they link the required Google Test framework dependencies.  
+
 # Future Plans
 * Implement inter-process communication for in-memory data synchronization. I would like to look into **Boost.Interprocess** to synchronize
   data through shared memory segments. Currently, data synchronization is handling by loading all data relations in parallel while switching
