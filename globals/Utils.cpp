@@ -104,6 +104,13 @@ bool Utils::isStringDouble(const std::string s)
 bool Utils::isStringInteger(const std::string s)
 {
 
+    for(int i = 0; i < s.length(); i++)
+    {
+
+        if(s[i] == '.') { return false; }
+
+    }
+    
     try
     {
 
