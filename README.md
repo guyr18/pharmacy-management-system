@@ -1,5 +1,6 @@
 # Pharmacy Management System
 
+<img src="https://user-images.githubusercontent.com/46636441/183282145-b5c9e607-0300-47f8-8860-8703b8d45b25.png" width="700" height="300" />
 
 
 https://user-images.githubusercontent.com/46636441/169282481-1b0d8f2a-f800-4eba-b178-d283ba31a5aa.mp4
