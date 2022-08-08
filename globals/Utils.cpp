@@ -104,26 +104,21 @@ bool Utils::isStringDouble(const std::string s)
 bool Utils::isStringInteger(const std::string s)
 {
 
-    for(int i = 0; i < s.length(); i++)
+    for(size_t index = 0; index < s.length(); index++)
     {
 
-        if(s[i] == '.') { return false; }
+        int ascii_code = ((int)s[index]) - 48;
+        
+        if(!(ascii_code >= 0 && ascii_code <= 9)) 
+        {
 
+            return false;
+
+        }
     }
-    
-    try
-    {
 
-        int temp = std::stoi(s);
-        return true;
-
-    }
-    catch(const std::exception& e)
-    {
-   
-        return false;
-
-    }
+    return true;
+	
 }
 
 // IsLeap(year) returns true if a year is a leap year. And otherwise, false.
